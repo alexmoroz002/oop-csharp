@@ -2,7 +2,7 @@ using Xunit;
 
 namespace Isu.Test;
 
-public class IsuService
+public class IsuServiceTest
 {
     [Fact]
     public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent() { }
