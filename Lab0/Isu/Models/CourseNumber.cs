@@ -4,7 +4,12 @@ public class CourseNumber
 {
     private int _year;
 
-    public int Course
+    public CourseNumber(int year)
+    {
+        Year = year;
+    }
+
+    public int Year
     {
         get => _year;
         private set

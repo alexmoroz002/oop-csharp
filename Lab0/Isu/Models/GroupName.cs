@@ -6,6 +6,11 @@ public class GroupName
 {
     private string _name = string.Empty;
 
+    public GroupName(string name)
+    {
+        Name = name;
+    }
+
     public string Name
     {
         get => _name;
