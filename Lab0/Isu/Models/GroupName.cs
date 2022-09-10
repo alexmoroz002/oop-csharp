@@ -17,8 +17,14 @@ public class GroupName
 
         private set
         {
+            /*
+            var bachelor = new Regex(@"[A - Z][3][1 - 4]");
+            var magistracy = new Regex(@"[A-Z][4][1-2]");  TODO: CHANGE
+            var specialty = new Regex(@"[B][5][1-6]");
+            var doctoral = new Regex(@"");
+            */
             var patternRegex = new Regex(
-                    @"^(([BDGHK-PRT-WZ][3][1-4]|[A-HJ-WY][4][1-2]|[B][5][1-6]|[7-8][6-9])([0-9][0-9])([1-4]?[c]?))$",
+                    @"^(([A-Z][3][1-4]|[A-Z][4][1-2]|[B][5][1-6]|[7-8][0-9])([0-9][0-9])([1-4]?[c]?))$",
                     RegexOptions.IgnoreCase);
             if (!patternRegex.IsMatch(value))
                 return;
