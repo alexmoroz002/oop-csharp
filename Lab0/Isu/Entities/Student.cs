@@ -10,4 +10,6 @@ public class Student
         _id = id;
         _name = name;
     }
+
+    public int Id { get; }
 }

@@ -24,4 +24,6 @@ public class Group
         _students = students;
         _groupName = groupName;
     }
+
+    public StudentsList Students { get { return _students; } }
 }
