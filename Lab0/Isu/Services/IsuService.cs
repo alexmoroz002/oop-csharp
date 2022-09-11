@@ -6,6 +6,7 @@ namespace Isu.Services;
 internal class IsuService : IIsuService
 {
     private List<Group> _groups;
+    private int _lastId = 100000;
 
     public IsuService()
     {
@@ -48,20 +49,28 @@ internal class IsuService : IIsuService
 
     public Student AddStudent(Group group, string name)
     {
-        throw new NotImplementedException();
+        var newStudent = new Student(_lastId, name);
+
+        // TODO: event - added student
+        _lastId++;
+        group.AddStudentInGroup(newStudent);
+        return newStudent;
     }
 
-    public List<Student> FindStudents(GroupName groupName)
+    public IReadOnlyList<Student> FindStudents(GroupName groupName)
+    {
+        Group? foundGroup = _groups.Find(x => x.GroupName == groupName);
+        if (foundGroup == null)
+            throw new Exception();
+        return foundGroup.Students;
+    }
+
+    public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
         throw new NotImplementedException();
     }
 
-    public List<Student> FindStudents(CourseNumber courseNumber)
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<Group> FindGroups(CourseNumber courseNumber)
+    public IReadOnlyList<Student> FindStudents(CourseNumber courseNumber)
     {
         throw new NotImplementedException();
     }

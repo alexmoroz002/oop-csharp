@@ -29,5 +29,10 @@ public class Group
         }
     }
 
+    public void AddStudentInGroup(Student student)
+    {
+        _students.Add(student);
+    }
+
     public GroupName GroupName { get { return _groupName; } }
 }
