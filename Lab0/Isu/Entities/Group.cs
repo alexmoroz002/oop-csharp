@@ -7,12 +7,7 @@ public class Group
     private StudentsList _students;
     private GroupName _groupName;
 
-    public Group(GroupName name)
-    {
-        _groupName = name;
-        _students = new StudentsList();
-    }
-
+    // public Group(GroupName name, int maxSize = 20)
     public Group(GroupName name, int maxSize)
     {
         _groupName = name;
