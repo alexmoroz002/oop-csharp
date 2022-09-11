@@ -24,8 +24,50 @@ internal class IsuService : IIsuService
         return null;
     }
 
+    public Student GetStudent(int id)
+    {
+        Student? foundStudent = FindStudent(id);
+        if (foundStudent == null)
+            throw new ArgumentException();
+        return foundStudent;
+    }
+
     public Group? FindGroup(GroupName groupName)
     {
         return _groups.Find(x => x.GroupName == groupName);
+    }
+
+    public Group AddGroup(GroupName name, int studentsCount = 20)
+    {
+        if (FindGroup(name) != null)
+            throw new ArgumentException(string.Format("s"));
+        var newGroup = new Group(name, studentsCount);
+        _groups.Add(newGroup);
+        return newGroup;
+    }
+
+    public Student AddStudent(Group group, string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Student> FindStudents(GroupName groupName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Student> FindStudents(CourseNumber courseNumber)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Group> FindGroups(CourseNumber courseNumber)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ChangeStudentGroup(Student student, Group newGroup)
+    {
+        throw new NotImplementedException();
     }
 }
