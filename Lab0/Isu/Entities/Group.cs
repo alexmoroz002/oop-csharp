@@ -25,5 +25,14 @@ public class Group
         _groupName = groupName;
     }
 
-    public StudentsList Students { get { return _students; } }
+    public IReadOnlyList<Student> Students
+    {
+        get
+        {
+            IReadOnlyList<Student> studentsListReadOnly = _students;
+            return studentsListReadOnly;
+        }
+    }
+
+    public GroupName GroupName { get { return _groupName; } }
 }

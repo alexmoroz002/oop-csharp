@@ -1,4 +1,5 @@
 ﻿using Isu.Entities;
+using Isu.Models;
 
 namespace Isu.Services;
 
@@ -15,11 +16,16 @@ internal class IsuService : IIsuService
     {
         foreach (Group group in _groups)
         {
-            Student? foundStudent = group.Students.Find(x => x.Id == id);
+            Student? foundStudent = group.Students.FirstOrDefault(x => x.Id == id);
             if (foundStudent != null)
                 return foundStudent;
         }
 
         return null;
+    }
+
+    public Group? FindGroup(GroupName groupName)
+    {
+        return _groups.Find(x => x.GroupName == groupName);
     }
 }
