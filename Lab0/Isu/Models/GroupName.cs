@@ -31,4 +31,12 @@ public class GroupName
             _name = value.ToUpper();
         }
     }
+
+    public CourseNumber CourseNumber
+    {
+        get
+        {
+            return new CourseNumber(Name.First(x => char.IsDigit(x)));
+        }
+    }
 }

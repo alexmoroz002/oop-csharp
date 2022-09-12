@@ -67,7 +67,7 @@ internal class IsuService : IIsuService
 
     public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
-        throw new NotImplementedException();
+        IReadOnlyList<Group>? groupsListReadOnly = _groups.FindAll(x => x.CourseNumber == courseNumber)
     }
 
     public IReadOnlyList<Student> FindStudents(CourseNumber courseNumber)
