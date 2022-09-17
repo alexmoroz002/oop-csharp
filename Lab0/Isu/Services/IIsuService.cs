@@ -5,7 +5,7 @@ namespace Isu.Services;
 
 public interface IIsuService
 {
-    Group AddGroup(GroupName name, int studentsCount);
+    Group AddGroup(GroupName groupName, int studentsCount);
     Student AddStudent(Group group, string name);
 
     Student GetStudent(int id);

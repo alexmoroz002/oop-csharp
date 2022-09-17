@@ -19,7 +19,7 @@ public class GroupName
         private set
         {
             var patternRegex = new Regex(
-                    @"^([A-Z]([3][1-4]|[4][1-2]|[5][1-6])([0-9][0-9])([1-4]?[c]?))$",
+                    @"^([A-Z]([3][1-4]|[4][1-2]|[5][1-6])([0-9][0-9])([1-9]?[c]?))$",
                     RegexOptions.IgnoreCase);
             if (!patternRegex.IsMatch(value))
                 throw new InvalidGroupNameException(" ");

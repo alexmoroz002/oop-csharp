@@ -19,38 +19,26 @@ public class IsuService : IIsuService
         return _groups.Select(group => group.Students.FirstOrDefault(x => x.Id == id)).FirstOrDefault(foundStudent => foundStudent != null);
     }
 
-    /*
-     * public Student? FindStudent(int id)
-    {
-        foreach (Group group in _groups)
-        {
-            Student? foundStudent = group.Students.FirstOrDefault(x => x.Id == id);
-            if (foundStudent != null)
-                return foundStudent;
-        }
-
-        return null;
-    }
-     */
-
     public Student GetStudent(int id)
     {
         Student foundStudent = FindStudent(id);
         if (foundStudent == null)
-            throw new ArgumentException();
+            throw new StudentNotFoundException(" ");
         return foundStudent;
     }
 
     public Group FindGroup(GroupName groupName)
     {
-        return _groups.Find(x => x.GroupName == groupName);
+        Group foundGroup = _groups.Find(x => x.GroupName.Name == groupName.Name);
+        return foundGroup;
     }
 
-    public Group AddGroup(GroupName name, int studentsCount = 20)
+    public Group AddGroup(GroupName groupName, int studentsCount)
     {
-        if (FindGroup(name) != null)
-            throw new GroupNotFoundException(" ");
-        var newGroup = new Group(name, studentsCount);
+        Group foundGroup = FindGroup(groupName);
+        if (foundGroup != null)
+            throw new GroupAlreadyExistsException(" ");
+        var newGroup = new Group(groupName, studentsCount);
         _groups.Add(newGroup);
         return newGroup;
     }
@@ -58,16 +46,14 @@ public class IsuService : IIsuService
     public Student AddStudent(Group group, string name)
     {
         var newStudent = new Student(_lastId, name);
-
-        // TODO: event - added student
-        _lastId++;
+        ++_lastId;
         group.AddStudentInGroup(newStudent);
         return newStudent;
     }
 
     public IReadOnlyList<Student> FindStudents(GroupName groupName)
     {
-        Group foundGroup = _groups.Find(x => x.GroupName == groupName);
+        Group foundGroup = FindGroup(groupName);
         if (foundGroup == null)
             throw new Exception();
         return foundGroup.Students;
@@ -75,7 +61,7 @@ public class IsuService : IIsuService
 
     public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
-        IReadOnlyList<Group> groupsListReadOnly = _groups.FindAll(x => x.CourseNumber == courseNumber);
+        IReadOnlyList<Group> groupsListReadOnly = _groups.FindAll(x => x.CourseNumber.Year == courseNumber.Year);
         if (groupsListReadOnly == null)
             throw new Exception();
         return groupsListReadOnly;
