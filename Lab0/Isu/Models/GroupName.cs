@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Isu.Exceptions;
 
 namespace Isu.Models;
 
@@ -21,7 +22,7 @@ public class GroupName
                     @"^([A-Z]([3][1-4]|[4][1-2]|[5][1-6])([0-9][0-9])([1-4]?[c]?))$",
                     RegexOptions.IgnoreCase);
             if (!patternRegex.IsMatch(value))
-                return;
+                throw new InvalidGroupNameException(" ");
             _name = value.ToUpper();
         }
     }

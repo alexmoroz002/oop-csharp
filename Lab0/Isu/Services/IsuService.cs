@@ -1,4 +1,5 @@
 ﻿using Isu.Entities;
+using Isu.Exceptions;
 using Isu.Models;
 
 namespace Isu.Services;
@@ -48,7 +49,7 @@ public class IsuService : IIsuService
     public Group AddGroup(GroupName name, int studentsCount = 20)
     {
         if (FindGroup(name) != null)
-            throw new ArgumentException(string.Format("s"));
+            throw new GroupNotFoundException(" ");
         var newGroup = new Group(name, studentsCount);
         _groups.Add(newGroup);
         return newGroup;
@@ -90,6 +91,8 @@ public class IsuService : IIsuService
     {
         Group oldGroup = _groups.Find(x => x.Students.Contains(student)) ?? throw new InvalidOperationException();
 
-        // oldGroup.Students.Remove(student);
+        oldGroup.DeleteStudentFromGroup(student.Id);
+
+        newGroup.AddStudentInGroup(student);
     }
 }
