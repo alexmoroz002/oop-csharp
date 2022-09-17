@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Isu.Entities;
+﻿using Isu.Entities;
 using Isu.Models;
 
 namespace Isu.Services;
@@ -68,7 +67,7 @@ internal class IsuService : IIsuService
 
     public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
-        IReadOnlyList<Group>? groupsListReadOnly = _groups.FindAll(x => x.CourseYearNumber == courseNumber);
+        IReadOnlyList<Group>? groupsListReadOnly = _groups.FindAll(x => x.CourseNumber == courseNumber);
         if (groupsListReadOnly == null)
             throw new Exception();
         return groupsListReadOnly;
