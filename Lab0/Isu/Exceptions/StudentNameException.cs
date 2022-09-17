@@ -1,5 +1,7 @@
 ﻿namespace Isu.Exceptions;
 
-internal class StudentNameException
+public class StudentNameException
 {
+    public StudentNameException()
+        : base() { }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Isu.Exceptions;
 
-internal class StudentNotFoundException
+public class StudentNotFoundException : Exception
 {
+    public StudentNotFoundException(string message)
+        : base(message) { }
 }
