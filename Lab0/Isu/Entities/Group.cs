@@ -6,26 +6,19 @@ namespace Isu.Entities;
 public class Group
 {
     private StudentsList _students;
-    private GroupName _groupName;
-    private CourseNumber _courseNumber;
 
     public Group(GroupName name, int maxSize)
     {
-        _groupName = name;
+        GroupName = name;
         _students = new StudentsList(maxSize);
-        _courseNumber = CourseNumber;
+        CourseNumber = new CourseNumber(Convert.ToInt32(GroupName.Name[2]));
     }
 
-    public Group(StudentsList students, GroupName groupName)
-    {
-        _students = students;
-        _groupName = groupName;
-        _courseNumber = CourseNumber;
-    }
+    public GroupName GroupName { get; }
 
-    public GroupName GroupName => _groupName;
+    public CourseNumber CourseNumber { get; }
 
-    public CourseNumber CourseNumber => new CourseNumber(Convert.ToInt32(GroupName.Name[2]));
+    public int StudentsLimit => _students.MaxStudentCount;
 
     public IReadOnlyList<Student> Students
     {
@@ -41,7 +34,7 @@ public class Group
         _students.Add(student);
     }
 
-    private void DeleteStudent(int id)
+    public void DeleteStudentFromGroup(int id)
     {
         if (_students.RemoveAll((x) => x.Id == id) == 0)
             throw new StudentNotFoundException(" ");

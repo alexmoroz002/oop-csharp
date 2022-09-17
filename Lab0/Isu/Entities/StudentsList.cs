@@ -4,19 +4,16 @@ namespace Isu.Entities;
 
 public class StudentsList : List<Student>
 {
-    private readonly int _maxStudentCount;
-
     public StudentsList(int maxStudentCount)
-        : base()
     {
-        _maxStudentCount = maxStudentCount;
+        MaxStudentCount = maxStudentCount;
     }
 
-    public int MaxStudentCount { get { return _maxStudentCount; } }
+    public int MaxStudentCount { get; }
 
     public new void Add(Student student)
     {
-        if (Count >= _maxStudentCount)
+        if (Count >= MaxStudentCount)
             throw new GroupOverflowException(" ");
         base.Add(student);
     }

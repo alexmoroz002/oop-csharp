@@ -2,14 +2,13 @@ namespace Isu.Entities;
 
 public class Student
 {
-    private int _id;
-    private string _name;
-
     public Student(int id, string name)
     {
-        _id = id;
-        _name = name;
+        Id = id;
+        Name = name;
     }
 
-    public int Id { get; }
+    public int Id { get; private set; }
+
+    public string Name { get; private set; }
 }
