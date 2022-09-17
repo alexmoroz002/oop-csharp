@@ -1,4 +1,7 @@
-﻿namespace Isu.Entities;
+﻿using Isu.Exceptions;
+
+namespace Isu.Entities;
+
 public class StudentsList : List<Student>
 {
     private readonly int _maxStudentCount;
@@ -14,7 +17,7 @@ public class StudentsList : List<Student>
     public new void Add(Student student)
     {
         if (Count >= _maxStudentCount)
-            throw new ArgumentException(); // TODO: Change ex type
+            throw new GroupOverflowException(" ");
         base.Add(student);
     }
 }

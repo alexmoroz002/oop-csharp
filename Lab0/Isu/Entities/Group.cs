@@ -1,3 +1,4 @@
+using Isu.Exceptions;
 using Isu.Models;
 
 namespace Isu.Entities;
@@ -38,5 +39,11 @@ public class Group
     public void AddStudentInGroup(Student student)
     {
         _students.Add(student);
+    }
+
+    private void DeleteStudent(int id)
+    {
+        if (_students.RemoveAll((x) => x.Id == id) == 0)
+            throw new StudentNotFoundException(" ");
     }
 }
