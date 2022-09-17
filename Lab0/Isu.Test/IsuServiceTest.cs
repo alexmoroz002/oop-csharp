@@ -1,3 +1,4 @@
+using Isu.Services;
 using Xunit;
 
 namespace Isu.Test;
@@ -14,5 +15,13 @@ public class IsuServiceTest
     public void CreateGroupWithInvalidName_ThrowException() { }
 
     [Fact]
-    public void TransferStudentToAnotherGroup_GroupChanged() { }
+    public void TransferStudentToAnotherGroup_GroupChanged()
+    {
+        IIsuService service = new IsuService();
+    }
+
+    /*
+     * [Theory]
+     * [InlineData]
+     */
 }

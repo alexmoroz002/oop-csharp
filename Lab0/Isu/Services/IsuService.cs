@@ -27,13 +27,13 @@ internal class IsuService : IIsuService
 
     public Student GetStudent(int id)
     {
-        Student? foundStudent = FindStudent(id);
+        Student foundStudent = FindStudent(id);
         if (foundStudent == null)
             throw new ArgumentException();
         return foundStudent;
     }
 
-    public Group? FindGroup(GroupName groupName)
+    public Group FindGroup(GroupName groupName)
     {
         return _groups.Find(x => x.GroupName == groupName);
     }
@@ -59,7 +59,7 @@ internal class IsuService : IIsuService
 
     public IReadOnlyList<Student> FindStudents(GroupName groupName)
     {
-        Group? foundGroup = _groups.Find(x => x.GroupName == groupName);
+        Group foundGroup = _groups.Find(x => x.GroupName == groupName);
         if (foundGroup == null)
             throw new Exception();
         return foundGroup.Students;
@@ -67,7 +67,7 @@ internal class IsuService : IIsuService
 
     public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
-        IReadOnlyList<Group>? groupsListReadOnly = _groups.FindAll(x => x.CourseNumber == courseNumber);
+        IReadOnlyList<Group> groupsListReadOnly = _groups.FindAll(x => x.CourseNumber == courseNumber);
         if (groupsListReadOnly == null)
             throw new Exception();
         return groupsListReadOnly;
@@ -82,6 +82,7 @@ internal class IsuService : IIsuService
     public void ChangeStudentGroup(Student student, Group newGroup)
     {
         Group oldGroup = _groups.Find(x => x.Students.Contains(student)) ?? throw new InvalidOperationException();
-        oldGroup.Students.Remove(student);
+
+        // oldGroup.Students.Remove(student);
     }
 }
