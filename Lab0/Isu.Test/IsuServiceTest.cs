@@ -48,8 +48,13 @@ public class IsuServiceTest
     public void TransferStudentToAnotherGroup_GroupChanged()
     {
         var service = new IsuService();
-        Group group1 = service.AddGroup(new GroupName("M31071"), 20);
+        Group oldGroup = service.AddGroup(new GroupName("A3100"), 20);
+        Group newGroup = service.AddGroup(new GroupName("A3114"), 20);
 
-        Group group2 = service.AddGroup(new GroupName("M31071"), 20);
+        Student student = service.AddStudent(oldGroup, "Ivanov Ivan");
+        service.ChangeStudentGroup(student, newGroup);
+
+        Assert.Contains(student, newGroup.Students);
+        Assert.DoesNotContain(student, oldGroup.Students);
     }
 }

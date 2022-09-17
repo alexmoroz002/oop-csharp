@@ -31,13 +31,13 @@ public class Group
     public void AddStudentInGroup(Student student)
     {
         if (_students.Exists(x => x == student))
-            throw new StudentAlreadyInGroupException(" ");
+            throw new StudentAlreadyInGroupException("Student is already in this group");
         _students.Add(student);
     }
 
     public void DeleteStudentFromGroup(int id)
     {
         if (_students.RemoveAll((x) => x.Id == id) == 0)
-            throw new StudentNotFoundException(" ");
+            throw new StudentNotFoundException("Student was not found");
     }
 }

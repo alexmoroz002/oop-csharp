@@ -23,7 +23,7 @@ public class IsuService : IIsuService
     {
         Student foundStudent = FindStudent(id);
         if (foundStudent == null)
-            throw new StudentNotFoundException(" ");
+            throw new StudentNotFoundException("Student was not found");
         return foundStudent;
     }
 
@@ -37,7 +37,7 @@ public class IsuService : IIsuService
     {
         Group foundGroup = FindGroup(groupName);
         if (foundGroup != null)
-            throw new GroupAlreadyExistsException(" ");
+            throw new GroupAlreadyExistsException("Group with this name already exists");
         var newGroup = new Group(groupName, studentsCount);
         _groups.Add(newGroup);
         return newGroup;
@@ -55,7 +55,7 @@ public class IsuService : IIsuService
     {
         Group foundGroup = FindGroup(groupName);
         if (foundGroup == null)
-            throw new Exception();
+            throw new StudentNotFoundException("Student was not found");
         return foundGroup.Students;
     }
 
@@ -63,7 +63,7 @@ public class IsuService : IIsuService
     {
         IReadOnlyList<Group> groupsListReadOnly = _groups.FindAll(x => x.CourseNumber.Year == courseNumber.Year);
         if (groupsListReadOnly == null)
-            throw new Exception();
+            throw new GroupNotFoundException("Group was not found");
         return groupsListReadOnly;
     }
 
@@ -76,9 +76,7 @@ public class IsuService : IIsuService
     public void ChangeStudentGroup(Student student, Group newGroup)
     {
         Group oldGroup = _groups.Find(x => x.Students.Contains(student)) ?? throw new InvalidOperationException();
-
         oldGroup.DeleteStudentFromGroup(student.Id);
-
         newGroup.AddStudentInGroup(student);
     }
 }

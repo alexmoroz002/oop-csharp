@@ -17,7 +17,7 @@ public class CourseNumber
         private set
         {
             if (value is < 1 or > 6)
-                throw new InvalidCourseNumberException(" ");
+                throw new InvalidCourseNumberException("Course number is invalid");
             _year = value;
         }
     }

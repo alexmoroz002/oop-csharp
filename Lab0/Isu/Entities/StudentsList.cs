@@ -14,7 +14,7 @@ public class StudentsList : List<Student>
     public new void Add(Student student)
     {
         if (Count >= MaxStudentCount)
-            throw new GroupOverflowException(" ");
+            throw new GroupOverflowException("Group already had maximum students");
         base.Add(student);
     }
 }
