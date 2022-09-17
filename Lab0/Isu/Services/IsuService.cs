@@ -3,7 +3,7 @@ using Isu.Models;
 
 namespace Isu.Services;
 
-internal class IsuService : IIsuService
+public class IsuService : IIsuService
 {
     private List<Group> _groups;
     private int _lastId = 100000;
@@ -13,7 +13,13 @@ internal class IsuService : IIsuService
         _groups = new List<Group>();
     }
 
-    public Student? FindStudent(int id)
+    public Student FindStudent(int id)
+    {
+        return _groups.Select(group => group.Students.FirstOrDefault(x => x.Id == id)).FirstOrDefault(foundStudent => foundStudent != null);
+    }
+
+    /*
+     * public Student? FindStudent(int id)
     {
         foreach (Group group in _groups)
         {
@@ -24,6 +30,7 @@ internal class IsuService : IIsuService
 
         return null;
     }
+     */
 
     public Student GetStudent(int id)
     {
