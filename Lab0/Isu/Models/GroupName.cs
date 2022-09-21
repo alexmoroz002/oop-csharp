@@ -18,10 +18,8 @@ public class GroupName
 
         private set
         {
-            var patternRegex = new Regex(
-                    @"^([A-Z]([3][1-4]|[4][1-2]|[5][1-6])([0-9][0-9])([1-9]?[c]?))$",
-                    RegexOptions.IgnoreCase);
-            if (!patternRegex.IsMatch(value))
+            const string pattern = @"^([A-Z]([3][1-4]|[4][1-2]|[5][1-6])([0-9][0-9])([1-9]?[c]?))$";
+            if (!Regex.IsMatch(value, pattern))
                 throw new InvalidGroupNameException("Group name is invalid");
             _name = value.ToUpper();
         }

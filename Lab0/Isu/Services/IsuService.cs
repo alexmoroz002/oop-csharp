@@ -16,7 +16,7 @@ public class IsuService : IIsuService
 
     public Student FindStudent(int id)
     {
-        return _groups.Select(group => group.Students.FirstOrDefault(x => x.Id == id)).FirstOrDefault(foundStudent => foundStudent != null);
+        return _groups.SelectMany(group => group.Students).FirstOrDefault(x => x.Id == id);
     }
 
     public Student GetStudent(int id)
@@ -45,8 +45,7 @@ public class IsuService : IIsuService
 
     public Student AddStudent(Group group, string name)
     {
-        var newStudent = new Student(_lastId, name);
-        ++_lastId;
+        var newStudent = new Student(_lastId++, name);
         group.AddStudentInGroup(newStudent);
         return newStudent;
     }
@@ -55,16 +54,13 @@ public class IsuService : IIsuService
     {
         Group foundGroup = FindGroup(groupName);
         if (foundGroup == null)
-            throw new StudentNotFoundException("Student was not found");
+            return Enumerable.Empty<Student>().ToList().AsReadOnly();
         return foundGroup.Students;
     }
 
     public IReadOnlyList<Group> FindGroups(CourseNumber courseNumber)
     {
-        IReadOnlyList<Group> groupsListReadOnly = _groups.FindAll(x => x.CourseNumber.Year == courseNumber.Year);
-        if (groupsListReadOnly == null)
-            throw new GroupNotFoundException("Group was not found");
-        return groupsListReadOnly;
+        return _groups.FindAll(x => x.CourseNumber.Year == courseNumber.Year);
     }
 
     public IReadOnlyList<Student> FindStudents(CourseNumber courseNumber)

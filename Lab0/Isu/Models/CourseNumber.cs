@@ -16,7 +16,10 @@ public class CourseNumber
         get => _year;
         private set
         {
-            if (value is < 1 or > 6)
+            const int bachelorFirstCourse = 1;
+            const int specialtyLastCourse = 5;
+
+            if (value is < bachelorFirstCourse or > specialtyLastCourse)
                 throw new InvalidCourseNumberException("Course number is invalid");
             _year = value;
         }

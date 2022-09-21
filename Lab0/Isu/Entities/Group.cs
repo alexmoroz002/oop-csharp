@@ -10,7 +10,9 @@ public class Group
 
     public Group(GroupName name, int maxSize = StudentsLimit)
     {
-        GroupName = name;
+        if (maxSize < 0)
+            throw new GroupOverflowException("Group size can't be negative");
+        GroupName = name ?? throw new InvalidGroupNameException("Group name is null");
         _students = new StudentsList(maxSize);
         CourseNumber = new CourseNumber((int)char.GetNumericValue(GroupName.Name[2]));
     }
@@ -19,14 +21,7 @@ public class Group
 
     public CourseNumber CourseNumber { get; }
 
-    public IReadOnlyList<Student> Students
-    {
-        get
-        {
-            IReadOnlyList<Student> studentsListReadOnly = _students;
-            return studentsListReadOnly;
-        }
-    }
+    public IReadOnlyList<Student> Students => _students.AsReadOnly();
 
     public void AddStudentInGroup(Student student)
     {
