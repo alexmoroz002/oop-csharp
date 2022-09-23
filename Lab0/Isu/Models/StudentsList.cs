@@ -1,6 +1,7 @@
-﻿using Isu.Exceptions;
+﻿using Isu.Entities;
+using Isu.Exceptions;
 
-namespace Isu.Entities;
+namespace Isu.Models;
 
 public class StudentsList : List<Student>
 {
