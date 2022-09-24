@@ -15,7 +15,7 @@ public class IsuServiceTest
     {
         Group group = _service.AddGroup(new GroupName("M32071"), 10);
         Student student = _service.AddStudent(group, "Ivanov Ivan");
-        Assert.True(student == _service.FindStudent(student.Id));
+        Assert.Equal(student, _service.FindStudent(student.Id));
     }
 
     [Fact]
