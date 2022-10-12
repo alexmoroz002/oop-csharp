@@ -5,8 +5,19 @@ public class Person
 
     public Person(decimal money)
     {
-        _money = money;
+        Money = money;
     }
 
-    public decimal Money => _money;
+    public decimal Money
+    {
+        get => _money;
+        private set
+        {
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            _money = value;
+        }
+    }
+
+    public void DeductMoney(decimal price) => Money -= price;
 }

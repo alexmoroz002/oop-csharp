@@ -1,5 +1,36 @@
 ﻿namespace Shops.Entities;
-public class Product
+public class Product // Maybe its better to inherit Product from ProductToBuy? Examine
 {
-    private string _name;
+    private readonly string _name;
+    private decimal _price;
+    private int _count;
+
+    public Product(string name, decimal price, int count = 0)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException("name");
+        if (count < 0)
+            throw new ArgumentOutOfRangeException("count");
+        if (price < 0)
+            throw new InvalidOperationException(" ");
+
+        _name = name;
+        _price = price;
+        _count = count;
+    }
+
+    public string Name => _name;
+
+    public decimal Price
+    {
+        get => _price;
+        set => _price = value;
+    }
+
+    public int Count
+    {
+        get => _count;
+        set => _count = value;
+    }
 }
+
