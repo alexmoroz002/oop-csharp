@@ -1,4 +1,5 @@
 ﻿using Shops.Entities;
+using Shops.Exceptions;
 using Shops.Models;
 
 namespace Shops.Manager;
@@ -21,29 +22,31 @@ public class ShopManager
         return newShop;
     }
 
-    public Shop FindCheapestShop(params ProductToBuy[] products)
+    public Shop GetCheapestShop(params ProductToBuy[] products)
     {
-        // var cheapestShopCandidates = new List<Shop>();
-        var cheapestShopCandidates = new List<Shop>();
-        foreach (var shop in _shops)
+        Shop cheapestShop = null;
+        decimal minSum = decimal.MaxValue;
+        foreach (Shop shop in _shops)
         {
-            foreach (var productInShop in shop.Products)
+            decimal sum = 0;
+            bool enoughProducts = true;
+            foreach (ProductToBuy productToBuy in products)
             {
-                if (products.Any(productToBuy => productToBuy.Name == productInShop.Name && productToBuy.Count <= productInShop.Count))
+                Product productInShop = shop.FindProduct(productToBuy.Name);
+                if (productInShop == null || productInShop.Count < productToBuy.Count)
                 {
-                    
-                    cheapestShopCandidates.Add(shop);
+                    enoughProducts = false;
                     break;
                 }
+
+                sum += productInShop.Price * productToBuy.Count;
             }
+
+            if (!enoughProducts || sum >= minSum) continue;
+            minSum = sum;
+            cheapestShop = shop;
         }
 
-        if (!cheapestShopCandidates.Any())
-            throw new Exception(" ");
-        foreach (var cheapestShopCandidate in cheapestShopCandidates)
-        {
-
-        }
-        return cheapestShopCandidates.First();
+        return cheapestShop ?? throw ShopManagerException.CheapestShopNotFound();
     }
 }
