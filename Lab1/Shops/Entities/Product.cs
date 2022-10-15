@@ -24,13 +24,12 @@ public class Product // Maybe its better to inherit Product from ProductToBuy? E
     public decimal Price
     {
         get => _price;
-        set => _price = value;
+        internal set => _price = value;
     }
 
     public int Count
     {
         get => _count;
-        set => _count = value;
+        internal set => _count = value;
     }
 }
-

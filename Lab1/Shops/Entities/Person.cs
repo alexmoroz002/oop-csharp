@@ -19,5 +19,5 @@ public class Person
         }
     }
 
-    public void DeductMoney(decimal price) => Money -= price;
+    internal void DeductMoney(decimal price) => Money -= price;
 }
