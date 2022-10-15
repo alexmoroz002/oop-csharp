@@ -1,4 +1,6 @@
-﻿namespace Shops.Entities;
+﻿using Shops.Models;
+
+namespace Shops.Entities;
 
 public class Shop
 {
@@ -6,24 +8,39 @@ public class Shop
     private string _address;
     private int _id;
     private List<Product> _products;
-    private int _lastId = 1;
 
-    public Shop(string name, string address)
+    public Shop(string name, string address, int id)
     {
         _name = name;
         _address = address;
-        _id = _lastId++;
+        _id = id;
         _products = new List<Product>();
     }
 
-    public string Name { get { return _name; } }
+    public string Name => _name;
 
-    public void AddProduct(string name, decimal price, int count)
+    public IReadOnlyList<Product> Products => _products;
+
+    public void AddProducts(params Product[] products)
     {
-        Product foundProduct = _products.Find(product => product.Name == name);
-        if (foundProduct != null)
-            foundProduct.Count += count;
-        _products.Add(new Product(name, price, count));
+        foreach (Product newProduct in products)
+        {
+            Product product = _products.Find(x => x.Name == newProduct.Name);
+            if (product != null)
+                product.Count += newProduct.Count;
+            else
+                _products.Add(newProduct);
+        }
+    }
+
+    public Product GetProduct(string name)
+    {
+        return _products.Find(product => product.Name == name) ?? throw new ArgumentException(" ");
+    }
+
+    public Product FindProduct(string name)
+    {
+        return _products.Find(product => product.Name == name);
     }
 
     public void ChangeProductPrice(string name, decimal newPrice)
@@ -34,12 +51,20 @@ public class Shop
         foundProduct.Price = newPrice;
     }
 
-    public void BuyProducts(Person buyer, params Product[] products)
+    public void BuyProducts(Person buyer, params ProductToBuy[] products)
     {
-        foreach (Product product in products)
+        decimal sum = 0;
+        foreach (ProductToBuy product in products)
         {
-            
+            Product productInShop = GetProduct(product.Name); // TODO: Вынести покупку в отдельный метод
+            if (productInShop.Count < product.Count)
+                throw new ArgumentException(" ");
+            productInShop.Count -= product.Count;
+            sum += productInShop.Price * product.Count;
         }
-    }
 
+        if (sum < buyer.Money)
+            throw new Exception(" ");
+        buyer.DeductMoney(sum);
+    }
 }
