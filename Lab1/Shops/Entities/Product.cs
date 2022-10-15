@@ -1,5 +1,7 @@
-﻿namespace Shops.Entities;
-public class Product // Maybe its better to inherit Product from ProductToBuy? Examine
+﻿using Shops.Exceptions;
+
+namespace Shops.Entities;
+public class Product
 {
     private readonly string _name;
     private decimal _price;
@@ -8,11 +10,11 @@ public class Product // Maybe its better to inherit Product from ProductToBuy? E
     public Product(string name, decimal price, int count = 0)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException("name");
+            throw ProductException.EmptyProductName();
         if (count < 0)
-            throw new ArgumentOutOfRangeException("count");
+            throw ProductException.NegativeProductCount(name);
         if (price < 0)
-            throw new InvalidOperationException(" ");
+            throw ProductException.NegativeProductPrice(name);
 
         _name = name;
         _price = price;

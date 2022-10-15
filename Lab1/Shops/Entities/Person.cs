@@ -1,4 +1,6 @@
-﻿namespace Shops.Entities;
+﻿using Shops.Exceptions;
+
+namespace Shops.Entities;
 public class Person
 {
     private decimal _money;
@@ -14,7 +16,7 @@ public class Person
         private set
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(value));
+                throw PersonException.NegativeMoneyAmount();
             _money = value;
         }
     }

@@ -1,16 +1,18 @@
-﻿namespace Shops.Models;
+﻿using Shops.Exceptions;
+
+namespace Shops.Models;
 
 public class ProductToBuy
 {
     private readonly string _name;
-    private int _count;
+    private readonly int _count;
 
-    public ProductToBuy(string name, int count = 0)
+    public ProductToBuy(string name, int count)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException("name");
+            throw ProductException.EmptyProductName();
         if (count < 0)
-            throw new ArgumentOutOfRangeException("count");
+            throw ProductException.NegativeProductCount(name);
 
         _name = name;
         _count = count;
