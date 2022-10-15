@@ -1,5 +1,7 @@
 ﻿using Shops.Entities;
+using Shops.Exceptions;
 using Shops.Manager;
+using Shops.Models;
 using Xunit;
 
 namespace Shops.Test;
@@ -7,6 +9,12 @@ namespace Shops.Test;
 public class ShopTest
 {
     private ShopManager _manager = new ShopManager();
+
+    [Fact]
+    public void AddPersonWithNegativeMoney()
+    {
+        Assert.Throws<PersonException>(() => new Person(-100));
+    }
 
     [Fact]
     public void AddShopToManager()
@@ -58,8 +66,80 @@ public class ShopTest
     }
 
     [Fact]
-    public void BuyProducts()
+    public void BuyProducts_ProductCountChanged()
     {
-        // Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        var p1 = new Product("Milk", 100, 5);
+        var p2 = new Product("Bread", 50, 10);
+        var p3 = new Product("Chocolate", 300, 1000);
+        shop.AddProducts(p1, p2, p3);
+        Person buyer = new Person(1000);
+        shop.BuyProducts(buyer, new ProductToBuy("Milk", 5));
+        Assert.Equal(0, shop.GetProduct("Milk").Count);
+    }
+
+    [Fact]
+    public void BuyProducts_NotEnoughProducts()
+    {
+        Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        var p1 = new Product("Milk", 100, 5);
+        var p2 = new Product("Bread", 50, 10);
+        var p3 = new Product("Chocolate", 300, 1000);
+        shop.AddProducts(p1, p2, p3);
+        Person buyer = new Person(1000);
+        shop.BuyProducts(buyer, new ProductToBuy("Milk", 5));
+        Assert.Throws<ShopException>(() => shop.BuyProducts(buyer, new ProductToBuy("Milk", 1)));
+    }
+
+    [Fact]
+    public void BuyProducts_NotEnoughMoney()
+    {
+        Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        var p1 = new Product("Milk", 100, 5);
+        var p2 = new Product("Bread", 50, 10);
+        var p3 = new Product("Chocolate", 300, 1000);
+        shop.AddProducts(p1, p2, p3);
+        Person buyer = new Person(1000);
+        Assert.Throws<ShopException>(() => shop.BuyProducts(buyer, new ProductToBuy("Chocolate", 4)));
+    }
+
+    [Theory]
+    [InlineData(100, 50, 5, 10)]
+    [InlineData(90, 30, 5, 0)]
+    [InlineData(80, 50, 1, 10)]
+    public void FindCheapestShop_ShopFound(decimal price1, decimal price2, int count1, int count2)
+    {
+        Shop badShop1 = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        var p1 = new Product("Milk", price1, count1);
+        var p2 = new Product("Bread", price2, count2);
+        badShop1.AddProducts(p1, p2);
+
+        Shop badShop2 = _manager.AddShop("Devyatochka", "Novosibirsk, Lenin St. 18");
+        p1 = new Product("Milk", 120, 10);
+        p2 = new Product("Bread", 50, 10);
+        badShop2.AddProducts(p1, p2);
+
+        Shop goodShop = _manager.AddShop("Desyatochka", "Novosibirsk, Lenin St. 19");
+        p1 = new Product("Milk", 99, 5);
+        p2 = new Product("Bread", 50, 10);
+        goodShop.AddProducts(p1, p2);
+
+        Assert.Equal(goodShop, _manager.GetCheapestShop(new ProductToBuy("Milk", 2), new ProductToBuy("Bread", 2)));
+    }
+
+    [Fact]
+    public void FindCheapestShop_ShopNotFound()
+    {
+        Shop badShop1 = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
+        var p1 = new Product("Milk", 99, 5);
+        var p2 = new Product("Bread", 50, 10);
+        badShop1.AddProducts(p1, p2);
+
+        Shop badShop2 = _manager.AddShop("Devyatochka", "Novosibirsk, Lenin St. 18");
+        p1 = new Product("Milk", 120, 9);
+        p2 = new Product("Bread", 50, 10);
+        badShop2.AddProducts(p1, p2);
+
+        Assert.Throws<ShopManagerException>(() => _manager.GetCheapestShop(new ProductToBuy("Milk", 10), new ProductToBuy("Bread", 2)));
     }
 }
