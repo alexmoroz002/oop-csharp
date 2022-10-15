@@ -44,9 +44,11 @@ public class ShopManager
                 sum += productInShop.Price * productToBuy.Count;
             }
 
-            if (!enoughProducts || sum >= minSum) continue;
-            minSum = sum;
-            cheapestShop = shop;
+            if (enoughProducts && sum <= minSum)
+            {
+                minSum = sum;
+                cheapestShop = shop;
+            }
         }
 
         return cheapestShop ?? throw ShopManagerException.CheapestShopNotFound();
