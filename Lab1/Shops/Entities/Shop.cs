@@ -57,17 +57,26 @@ public class Shop
         if (products.Length == 0)
             return;
         decimal sum = 0;
+        var productsInCart = new List<Product>();
         foreach (ProductToBuy product in products)
         {
             Product productInShop = GetProduct(product.Name);
             if (productInShop.Count < product.Count)
                 throw ShopException.NotEnoughProducts(productInShop);
-            productInShop.Count -= product.Count;
+            productsInCart.Add(productInShop);
             sum += productInShop.Price * product.Count;
         }
 
         if (sum > buyer.Money)
             throw ShopException.NotEnoughMoney();
+        foreach (Product product in productsInCart)
+        {
+            foreach (ProductToBuy productToBuy in products)
+            {
+                product.Count -= productToBuy.Count;
+            }
+        }
+
         buyer.DeductMoney(sum);
     }
 }
