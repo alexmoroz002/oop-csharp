@@ -25,7 +25,7 @@ public class ShopManager
     public Shop GetCheapestShop(params ProductToBuy[] products)
     {
         Shop cheapestShop = null;
-        decimal minSum = decimal.MaxValue;
+        decimal? minSum = null;
         foreach (Shop shop in _shops)
         {
             decimal sum = 0;
@@ -44,7 +44,7 @@ public class ShopManager
                 sum += productInShop.Price * productToBuy.Count;
             }
 
-            if (enoughProducts && sum <= minSum)
+            if (enoughProducts && (sum <= minSum || minSum == null))
             {
                 minSum = sum;
                 cheapestShop = shop;
