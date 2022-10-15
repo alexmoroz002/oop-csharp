@@ -10,7 +10,7 @@ public class Shop
     private int _id;
     private List<Product> _products;
 
-    public Shop(string name, string address, int id)
+    internal Shop(string name, string address, int id)
     {
         _name = name;
         _address = address;
