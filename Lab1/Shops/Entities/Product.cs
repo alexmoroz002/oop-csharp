@@ -7,7 +7,7 @@ public class Product
     private decimal _price;
     private int _count;
 
-    public Product(string name, decimal price, int count = 0)
+    public Product(string name, decimal price, int count)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw ProductException.EmptyProductName();

@@ -1,4 +1,6 @@
-﻿namespace Shops.Exceptions;
+﻿using Shops.Entities;
+
+namespace Shops.Exceptions;
 
 public class ProductException : Exception
 {
@@ -18,5 +20,15 @@ public class ProductException : Exception
     public static ProductException NegativeProductPrice(string productName)
     {
         return new ProductException($"Product {productName} price is negative");
+    }
+
+    public static ProductException ZeroProductCount(Product product)
+    {
+        return new ProductException($"Product {product.Name} count is zero");
+    }
+
+    public static ProductException NullProduct()
+    {
+        return new ProductException("Product is null");
     }
 }

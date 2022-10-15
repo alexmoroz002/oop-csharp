@@ -32,6 +32,8 @@ public class ShopManager
             bool enoughProducts = true;
             foreach (ProductToBuy productToBuy in products)
             {
+                if (productToBuy == null)
+                    throw ProductException.NullProduct();
                 Product productInShop = shop.FindProduct(productToBuy.Name);
                 if (productInShop == null || productInShop.Count < productToBuy.Count)
                 {

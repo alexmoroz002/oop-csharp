@@ -105,7 +105,7 @@ public class ShopTest
 
     [Theory]
     [InlineData(100, 50, 5, 10)]
-    [InlineData(90, 30, 5, 0)]
+    [InlineData(90, 30, 5, 1)]
     [InlineData(80, 50, 1, 10)]
     public void FindCheapestShop_ShopFound(decimal price1, decimal price2, int count1, int count2)
     {

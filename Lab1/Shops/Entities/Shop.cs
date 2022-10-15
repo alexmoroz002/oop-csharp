@@ -26,8 +26,10 @@ public class Shop
     {
         foreach (Product newProduct in products)
         {
+            if (newProduct == null)
+                throw ProductException.NullProduct();
             if (newProduct.Count == 0)
-                continue;
+                throw ProductException.ZeroProductCount(newProduct);
             Product product = FindProduct(newProduct.Name);
             if (product != null)
                 product.Count += newProduct.Count;
@@ -60,6 +62,8 @@ public class Shop
         var productsInCart = new List<Product>();
         foreach (ProductToBuy product in products)
         {
+            if (product == null)
+                throw ProductException.NullProduct();
             Product productInShop = GetProduct(product.Name);
             if (productInShop.Count < product.Count)
                 throw ShopException.NotEnoughProducts(productInShop);
@@ -69,6 +73,7 @@ public class Shop
 
         if (sum > buyer.Money)
             throw ShopException.NotEnoughMoney();
+
         foreach (Product product in productsInCart)
         {
             foreach (ProductToBuy productToBuy in products)
