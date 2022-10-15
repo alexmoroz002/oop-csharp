@@ -8,23 +8,23 @@ namespace Shops.Test;
 
 public class ShopTest
 {
-    private ShopManager _manager = new ShopManager();
+    private ShopManager _manager = new ();
 
     [Fact]
-    public void AddPersonWithNegativeMoney()
+    public void AddPersonWithNegativeMoney_ThrowException()
     {
         Assert.Throws<PersonException>(() => new Person(-100));
     }
 
     [Fact]
-    public void AddShopToManager()
+    public void AddShopToManager_ShopIsInManager()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         Assert.Contains(shop, _manager.Shops);
     }
 
     [Fact]
-    public void AddProductsToShopAndGet()
+    public void AddProductsToShop_ProductsAreInShop()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         var p1 = new Product("Milk", 100, 5);
@@ -36,7 +36,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void ChangeProductPrice()
+    public void ChangeProductPrice_PriceHasChanged()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         shop.AddProducts(new Product("Chocolate", 200, 10));
@@ -48,7 +48,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void AddExistingProduct()
+    public void AddExistingProduct_CountChanged()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         decimal supplyPrice = 200,
@@ -66,7 +66,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void BuyProducts_ProductCountChanged()
+    public void BuyProducts_CountChanged()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         var p1 = new Product("Milk", 100, 5);
@@ -79,7 +79,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void BuyProducts_NotEnoughProducts()
+    public void BuyProducts_NotEnoughProducts_ThrowException()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         var p1 = new Product("Milk", 100, 5);
@@ -92,7 +92,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void BuyProducts_NotEnoughMoney()
+    public void BuyProducts_NotEnoughMoney_ThrowException()
     {
         Shop shop = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         var p1 = new Product("Milk", 100, 5);
@@ -128,7 +128,7 @@ public class ShopTest
     }
 
     [Fact]
-    public void FindCheapestShop_ShopNotFound()
+    public void FindCheapestShop_ShopNotFound_ThrowException()
     {
         Shop badShop1 = _manager.AddShop("Semerochka", "Novosibirsk, Lenin St. 16");
         var p1 = new Product("Milk", 99, 5);
