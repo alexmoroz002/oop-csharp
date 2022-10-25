@@ -1,7 +1,7 @@
 ﻿using Isu.Extra.Decorators;
 using Isu.Services;
 
-namespace Isu.Extra;
+namespace Isu.Extra.Services;
 
 public class IsuServiceOgnp : IsuDecorator
 {
