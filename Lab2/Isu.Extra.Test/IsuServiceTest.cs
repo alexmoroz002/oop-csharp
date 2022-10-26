@@ -14,7 +14,7 @@ public class IsuServiceTest
     private IsuServiceTest()
     {
         _service = new IsuService();
-        _service = new IsuServiceOgnp(_service);
+        _service = new IsuServiceExtra(_service);
     }
 
     [Fact]
