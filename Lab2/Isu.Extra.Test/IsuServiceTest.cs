@@ -1,5 +1,6 @@
 using Isu.Entities;
 using Isu.Exceptions;
+using Isu.Extra.Services;
 using Isu.Models;
 using Isu.Services;
 using Xunit;
@@ -8,7 +9,13 @@ namespace Isu.Test;
 
 public class IsuServiceTest
 {
-    private IsuService _service = new IsuService();
+    private IIsuService _service;
+
+    private IsuServiceTest()
+    {
+        _service = new IsuService();
+        _service = new IsuServiceOgnp(_service);
+    }
 
     [Fact]
     public void AddStudentToIsu_StudentIsInIsu()
