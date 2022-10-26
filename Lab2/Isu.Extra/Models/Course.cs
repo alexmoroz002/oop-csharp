@@ -1,8 +1,8 @@
-﻿using Isu.Extra.Entities;
-
-namespace Isu.Extra.Models;
+﻿namespace Isu.Extra.Models;
 
 public abstract class Course
 {
-    internal List<Flow> Flows { get; set; }
+    protected internal string Name { get; protected set; }
+    protected abstract void AddFlow();
+    protected abstract void DeleteEmptyFlowS();
 }
