@@ -1,18 +1,18 @@
-﻿using Isu.Extra.Models;
+﻿namespace Isu.Extra.Entities;
 
-namespace Isu.Extra.Entities;
-
-public class OgnpCourse : Course
+public class OgnpCourse
 {
-    protected internal List<OgnpFlow> Flows { get; protected set; }
-    private string Faculty { get; set; }
+    private List<Flow> _flows;
+    public IReadOnlyList<Flow> Flows => _flows.AsReadOnly();
+    public string Faculty { get; private set; }
+    public string Name { get; private set; }
 
-    protected override void AddFlow()
+    protected void AddFlow()
     {
         throw new NotImplementedException();
     }
 
-    protected override void DeleteEmptyFlowS()
+    protected void DeleteEmptyFlowS()
     {
         throw new NotImplementedException();
     }
