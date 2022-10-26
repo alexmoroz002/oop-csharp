@@ -4,10 +4,10 @@ using Isu.Services;
 
 namespace Isu.Extra.Services;
 
-public class IsuServiceOgnp : IsuDecorator
+public class IsuServiceExtra : IsuDecorator, IIsuServiceExtra
 {
     private List<Teacher> _teachers;
 
-    public IsuServiceOgnp(IIsuService wrapper)
+    public IsuServiceExtra(IIsuService wrapper)
         : base(wrapper) { }
 }
