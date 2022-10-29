@@ -5,16 +5,15 @@ using Isu.Models;
 using Isu.Services;
 using Xunit;
 
-namespace Isu.Test;
+namespace Isu.Extra.Test;
 
 public class IsuServiceTest
 {
     private IIsuService _service;
 
-    private IsuServiceTest()
+    public IsuServiceTest()
     {
-        _service = new IsuService();
-        _service = new IsuServiceExtra(_service);
+        _service = new IsuServiceExtra(new IsuService());
     }
 
     [Fact]
