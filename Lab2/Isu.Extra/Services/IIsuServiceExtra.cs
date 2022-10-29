@@ -15,4 +15,5 @@ public interface IIsuServiceExtra
     public OgnpCourse FindCourse(string courseName);
     public IReadOnlyList<Student> FindUnsignedOgnpStudents(Group group);
     public IReadOnlyList<CourseGroup> FindGroups(OgnpCourse course, CourseFlow flow);
+    public void AddLessonsToGroup(Group group, params Lesson[] lessons);
 }
