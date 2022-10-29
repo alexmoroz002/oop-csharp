@@ -1,4 +1,6 @@
-﻿namespace Isu.Extra.Entities;
+﻿using Isu.Extra.ExceptionsExtra;
+
+namespace Isu.Extra.Entities;
 
 public class Lesson
 {
@@ -15,21 +17,28 @@ public class Lesson
     };
     private TimeOnly _startTime;
 
-    public Lesson(int lessonNumber, DayOfWeek dayOfWeek, int teacherId, int classroom)
+    public Lesson(int lessonNumber, DayOfWeek dayOfWeek, string teacher, int classroom)
     {
-        if (LessonNumberToTime.TryGetValue(lessonNumber, out _startTime))
-            throw new NotImplementedException();
+        if (!LessonNumberToTime.TryGetValue(lessonNumber, out _startTime))
+            throw LessonException.InvalidLessonNumber(lessonNumber);
         DayOfWeek = dayOfWeek;
-
-        // Group = group;
-        TeacherId = teacherId;
+        Teacher = teacher;
         Classroom = classroom;
     }
 
     public TimeOnly StartTime => _startTime;
     public DayOfWeek DayOfWeek { get; }
-
-    // public Group Group { get; }
-    public int TeacherId { get; }
+    public string Teacher { get; }
     public int Classroom { get; }
+    public override bool Equals(object obj)
+    {
+        return obj is Lesson lesson &&
+               StartTime == lesson.StartTime &&
+               DayOfWeek == lesson.DayOfWeek;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(StartTime, DayOfWeek);
+    }
 }
