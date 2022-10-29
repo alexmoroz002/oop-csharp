@@ -2,18 +2,26 @@
 
 public class OgnpCourse
 {
-    private List<Flow> _flows;
-    public IReadOnlyList<Flow> Flows => _flows.AsReadOnly();
-    public string Faculty { get; private set; }
-    public string Name { get; private set; }
+    private List<CourseFlow> _flows;
+    private int _lastId = 1;
 
-    protected void AddFlow()
+    public OgnpCourse(char facultyLetter, string courseName)
     {
-        throw new NotImplementedException();
+        _flows = new List<CourseFlow>();
+        FacultyLetter = char.ToUpper(facultyLetter);
+        CourseName = courseName;
     }
 
-    protected void DeleteEmptyFlowS()
+    public IReadOnlyList<CourseFlow> Flows => _flows.AsReadOnly();
+
+    public char FacultyLetter { get; private set; }
+
+    public string CourseName { get; private set; }
+
+    internal CourseFlow AddFlow()
     {
-        throw new NotImplementedException();
+        var flow = new CourseFlow(_lastId++);
+        _flows.Add(flow);
+        return flow;
     }
 }
