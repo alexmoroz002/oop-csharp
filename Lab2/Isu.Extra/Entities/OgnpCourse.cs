@@ -5,7 +5,7 @@ public class OgnpCourse
     private List<CourseFlow> _flows;
     private int _lastId = 1;
 
-    public OgnpCourse(char facultyLetter, string courseName)
+    internal OgnpCourse(char facultyLetter, string courseName)
     {
         _flows = new List<CourseFlow>();
         FacultyLetter = char.ToUpper(facultyLetter);

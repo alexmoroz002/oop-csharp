@@ -7,11 +7,9 @@ public class Timetable
 {
     private List<Lesson> _lessons = new ();
 
-    public Timetable()
-    {
-    }
+    public Timetable() { }
 
-    public Timetable(params Lesson[] lessons)
+    internal Timetable(params Lesson[] lessons)
     {
         if (lessons.Length < 1)
             throw TimetableException.EmptyLessonList();
@@ -27,7 +25,7 @@ public class Timetable
 
     public IReadOnlyList<Lesson> Lessons => _lessons;
 
-    public void AddLessons(params Lesson[] lessons)
+    internal void AddLessons(params Lesson[] lessons)
     {
         foreach (Lesson lesson in lessons)
         {
@@ -35,7 +33,7 @@ public class Timetable
         }
     }
 
-    public void DeleteLessons(params Lesson[] lessons)
+    internal void DeleteLessons(params Lesson[] lessons)
     {
         foreach (Lesson lesson in lessons)
         {

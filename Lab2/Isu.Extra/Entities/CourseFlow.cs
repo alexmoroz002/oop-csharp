@@ -5,7 +5,7 @@ public class CourseFlow
     private List<CourseGroup> _groups;
     private int _lastId = 1;
 
-    public CourseFlow(int flowNumber)
+    internal CourseFlow(int flowNumber)
     {
         _groups = new List<CourseGroup>();
         FlowNumber = flowNumber;
