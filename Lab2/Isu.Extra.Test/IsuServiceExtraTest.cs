@@ -179,4 +179,35 @@ public class IsuServiceExtraTest
 
         Assert.Contains(student, _service.FindUnsignedOgnpStudents(facultyGroup));
     }
+
+    [Fact]
+    public void AddSameLessonsToTwoGroups_ThrowException()
+    {
+        Group group1 = _service.AddGroup(new GroupName("M3100"), 20);
+        Group group2 = _service.AddGroup(new GroupName("M3101"), 20);
+        Lesson[] lessons =
+        {
+            new Lesson(1, DayOfWeek.Friday, "Alex", 2232),
+            new Lesson(2, DayOfWeek.Saturday, "Alex", 2232),
+            new Lesson(3, DayOfWeek.Friday, "Alex", 2232),
+        };
+        _service.AddLessonsToGroup(group1, lessons);
+        Assert.Throws<LessonException>(() => _service.AddLessonsToGroup(group2, lessons));
+    }
+
+    [Fact]
+    public void AddSameLessonsToGroupAndOgnp_ThrowException()
+    {
+        Group group = _service.AddGroup(new GroupName("M3100"), 20);
+        Lesson[] lessons =
+        {
+            new Lesson(1, DayOfWeek.Friday, "Alex", 2232),
+            new Lesson(2, DayOfWeek.Saturday, "Alex", 2232),
+            new Lesson(3, DayOfWeek.Friday, "Alex", 2232),
+        };
+        _service.AddLessonsToGroup(group, lessons);
+        OgnpCourse course = _service.AddCourse('X', "Course");
+        CourseFlow flow = _service.AddFlow(course);
+        Assert.Throws<LessonException>(() => _service.AddGroup(flow, lessons));
+    }
 }

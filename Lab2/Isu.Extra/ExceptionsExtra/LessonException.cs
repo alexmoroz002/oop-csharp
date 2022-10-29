@@ -14,4 +14,9 @@ public class LessonException : Exception
     {
         return new LessonException("Lesson is null");
     }
+
+    public static LessonException LessonGroupAlreadySet()
+    {
+        return new LessonException("Lesson is already set to group");
+    }
 }

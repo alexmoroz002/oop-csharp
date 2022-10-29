@@ -24,12 +24,14 @@ public class Lesson
         DayOfWeek = dayOfWeek;
         Teacher = teacher;
         Classroom = classroom;
+        GroupName = null;
     }
 
     public TimeOnly StartTime => _startTime;
     public DayOfWeek DayOfWeek { get; }
     public string Teacher { get; }
     public int Classroom { get; }
+    public string GroupName { get; internal set; }
     public override bool Equals(object obj)
     {
         return obj is Lesson lesson &&
@@ -40,5 +42,12 @@ public class Lesson
     public override int GetHashCode()
     {
         return HashCode.Combine(StartTime, DayOfWeek);
+    }
+
+    internal void SetGroup(string group)
+    {
+        if (GroupName != null)
+            throw LessonException.LessonGroupAlreadySet();
+        GroupName = group;
     }
 }

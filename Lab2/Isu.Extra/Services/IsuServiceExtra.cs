@@ -66,7 +66,8 @@ public class IsuServiceExtra : IsuBaseDecorator, IIsuServiceExtra
             throw TimetableException.TimetableIntersection();
 
         courseGroup.AddStudentInGroup(student);
-        _studentTimetable[student].AddLessons(courseGroup.Timetable.Lessons.ToArray());
+        Lesson[] lessons = courseGroup.Timetable.Lessons.ToArray();
+        _studentTimetable[student].AddLessons(lessons);
     }
 
     public void DeleteRecordOnCourse(Student student, OgnpCourse course, CourseFlow flow, CourseGroup group)
@@ -107,6 +108,11 @@ public class IsuServiceExtra : IsuBaseDecorator, IIsuServiceExtra
 
     public void AddLessonsToGroup(Group group, params Lesson[] lessons)
     {
+        foreach (Lesson lesson in lessons)
+        {
+            lesson.SetGroup(group.GroupName.Name);
+        }
+
         foreach (Student groupStudent in group.Students)
         {
             if (!_studentTimetable.ContainsKey(groupStudent))

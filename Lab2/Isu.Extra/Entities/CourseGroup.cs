@@ -15,6 +15,12 @@ public class CourseGroup
     {
         _students = new StudentsList(StudentsLimit);
         GroupNumber = number;
+
+        foreach (Lesson lesson in lessons)
+        {
+            lesson.SetGroup(number.ToString());
+        }
+
         _timetable = new Timetable(lessons);
     }
 
