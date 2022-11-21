@@ -4,5 +4,5 @@ namespace Backups.Models;
 
 public class BackupObject
 {
-    private UPath path;
+    private UPath _path;
 }
