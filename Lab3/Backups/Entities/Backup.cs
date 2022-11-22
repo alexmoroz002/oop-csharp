@@ -1,11 +1,13 @@
-﻿namespace Backups.Entities;
+﻿using Backups.Interfaces;
 
-public class Backup
+namespace Backups.Entities;
+
+public class Backup : IBackup
 {
     private List<RestorePoint> _restorePoints;
 
-    public RestorePoint CreateRestorePoint()
+    public RestorePoint CreateRestorePoint(Config config)
     {
-
+        config.Repository.
     }
 }
