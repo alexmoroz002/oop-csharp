@@ -1,4 +1,6 @@
-﻿using Zio;
+﻿using Backups.Entities;
+using Backups.Interfaces;
+using Zio;
 using Zio.FileSystems;
 
 namespace Backups.Models;
@@ -10,7 +12,9 @@ public abstract class Repository
         FileSystem = fileSystem;
     }
 
-    protected FileSystem FileSystem { get; }
+    public FileSystem FileSystem { get; }
+
+    public abstract Storage ArchiveObjects(params IBackupObject[] backupObjects);
 
     protected void CreateDirectory(UPath path)
     {
