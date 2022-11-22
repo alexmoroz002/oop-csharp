@@ -3,20 +3,22 @@ using Backups.Models;
 
 namespace Backups.Entities;
 
-public class Config
+public class Config : IConfig
 {
-    private IAlgorithm _algorithm;
-    private Repository _repository;
-    private List<BackupObject> _trackedObjects;
+    private List<IBackupObject> _trackedObjects;
 
     public Config(IAlgorithm algorithm, Repository repository)
     {
-        _algorithm = algorithm;
-        _repository = repository;
-        _trackedObjects = new List<BackupObject>();
+        Algorithm = algorithm;
+        Repository = repository;
+        _trackedObjects = new List<IBackupObject>();
     }
 
-    public void AddObjects(params BackupObject[] objects)
+    public IAlgorithm Algorithm { get; }
+
+    public Repository Repository { get; }
+
+    public void AddObjects(params IBackupObject[] objects)
     {
         if (objects == null)
         {
@@ -28,7 +30,7 @@ public class Config
         _trackedObjects.AddRange(objects);
     }
 
-    public void DeleteObjects(params BackupObject[] objects)
+    public void DeleteObjects(params IBackupObject[] objects)
     {
         if (objects == null)
         {
