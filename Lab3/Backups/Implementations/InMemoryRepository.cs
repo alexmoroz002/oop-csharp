@@ -25,7 +25,9 @@ public class InMemoryRepository : Repository
                 backupObject.Archive(stream);
             }
 
-            using (Stream file = FileSystem.OpenFile(archivePath, FileMode.CreateNew, FileAccess.Write))
+            if (!Directory.Exists(archivePath.FullName))
+                CreateDirectory(archivePath.GetDirectory());
+            using (Stream file = FileSystem.OpenFile(archivePath, FileMode.Create, FileAccess.ReadWrite))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.CopyTo(file);
