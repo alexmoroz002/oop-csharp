@@ -13,11 +13,17 @@ public abstract class Repository
     }
 
     public FileSystem FileSystem { get; }
+    public UPath Path { get; }
 
-    public abstract Storage ArchiveObjects(params IBackupObject[] backupObjects);
+    public abstract Storage ArchiveObjects(UPath backupsPath, int version, params IBackupObject[] backupObjects);
 
-    protected void CreateDirectory(UPath path)
+    public void CreateDirectory(UPath path)
     {
         FileSystem.CreateDirectory(path);
+    }
+
+    public void CreateFile(UPath path)
+    {
+        FileSystem.CreateFile(path);
     }
 }

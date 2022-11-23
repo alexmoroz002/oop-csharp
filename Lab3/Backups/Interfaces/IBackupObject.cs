@@ -3,4 +3,5 @@
 public interface IBackupObject
 {
     public Stream Archive(Stream source);
+    public string GetName();
 }
