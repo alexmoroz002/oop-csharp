@@ -4,5 +4,7 @@ namespace Backups.Interfaces;
 
 public interface IBackup
 {
-    public RestorePoint CreateRestorePoint(IConfig config);
+    int BackupVersion { get; }
+    IReadOnlyList<RestorePoint> RestorePoints { get; }
+    RestorePoint CreateRestorePoint(IConfig config);
 }

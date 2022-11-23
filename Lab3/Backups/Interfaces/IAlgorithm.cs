@@ -6,5 +6,5 @@ namespace Backups.Interfaces;
 
 public interface IAlgorithm
 {
-    IEnumerable<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, IEnumerable<IBackupObject> objects);
+    List<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, IEnumerable<IBackupObject> objects);
 }
