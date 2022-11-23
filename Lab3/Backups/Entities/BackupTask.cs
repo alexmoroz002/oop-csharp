@@ -4,29 +4,27 @@ namespace Backups.Entities;
 
 public class BackupTask : IBackupTask
 {
-    private IConfig _config;
-    private Backup _backup;
-    private string _name;
-
-    public BackupTask(string name, IConfig config)
+    public BackupTask(IConfig config)
     {
-        _backup = new Backup();
-        _config = config;
-        _name = name;
+        Backup = new Backup();
+        Config = config;
     }
+
+    public IConfig Config { get; }
+    public Backup Backup { get; }
 
     public RestorePoint CreateBackup()
     {
-        return _backup.CreateRestorePoint(_config);
+        return Backup.CreateRestorePoint(Config);
     }
 
     public void CheckObjectsToBackup(params IBackupObject[] objects)
     {
-        _config.AddObjects(objects);
+        Config.AddObjects(objects);
     }
 
     public void UncheckObjectsToBackup(params IBackupObject[] objects)
     {
-        _config.RemoveObjects(objects);
+        Config.RemoveObjects(objects);
     }
 }

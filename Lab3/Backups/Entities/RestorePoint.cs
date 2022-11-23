@@ -4,19 +4,22 @@ namespace Backups.Entities;
 
 public class RestorePoint : IRestorePoint
 {
-    private List<IBackupObject> _objects;
-    private List<Storage> _backupedObjects;
-    private DateTime _creationTime;
+    private List<IBackupObject> _backupObjects;
+    private List<Storage> _storages;
 
-    public RestorePoint(List<IBackupObject> objects)
+    public RestorePoint(List<IBackupObject> objects, List<Storage> storages)
     {
-        _objects = objects;
-        _creationTime = DateTime.Now;
-        _backupedObjects = new List<Storage>();
+        _backupObjects = objects;
+        CreationTime = DateTime.Now;
+        _storages = storages;
     }
+
+    public IReadOnlyList<Storage> Storages => _storages;
+    public IReadOnlyList<IBackupObject> BackupObjects => _backupObjects;
+    public DateTime CreationTime { get; private set; }
 
     public void SetTIme(DateTime time)
     {
-        _creationTime = time;
+        CreationTime = time;
     }
 }
