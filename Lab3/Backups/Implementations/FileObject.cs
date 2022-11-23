@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Models;
 using Zio;
@@ -13,17 +14,14 @@ public class FileObject : IBackupObject
     public FileObject(Repository repository, UPath path)
     {
         if (repository.FileSystem.GetAttributes(path) == FileAttributes.Directory)
-            throw new NotImplementedException();
+            throw FileObjectException.InvalidObjectType(path);
         _repository = repository;
         Path = path;
     }
 
     public UPath Path { get; }
 
-    public string GetName()
-    {
-        return Path.GetName();
-    }
+    public string Name => Path.GetName();
 
     public Stream Archive(Stream source)
     {
@@ -33,5 +31,16 @@ public class FileObject : IBackupObject
         }
 
         return source;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is FileObject fileObject &&
+               Name == fileObject.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
     }
 }
