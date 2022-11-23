@@ -1,7 +1,7 @@
-﻿using System.IO.Compression;
-using Backups.Entities;
+﻿using Backups.Entities;
 using Backups.Interfaces;
 using Backups.Models;
+using Zio;
 using Zio.FileSystems;
 
 namespace Backups.Implementations;
@@ -11,27 +11,27 @@ public class InMemoryRepository : Repository
     public InMemoryRepository()
         : base(new MemoryFileSystem()) { }
 
-    public override Storage ArchiveObjects(params IBackupObject[] backupObjects)
+    public override Storage ArchiveObjects(UPath backupsPath, int version, params IBackupObject[] backupObjects)
     {
-        /*
-        using (var memoryStream = new MemoryStream())
+        UPath archivePath;
+        if (backupObjects.Length > 1)
+            archivePath = backupsPath / @$"Restore Point {version} + /Single Storage.zip";
+        else
+            archivePath = backupsPath / @$"Restore Point {version} + /{backupObjects[0].GetName()}.zip";
+        using (var stream = new MemoryStream())
         {
-            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            foreach (IBackupObject backupObject in backupObjects)
             {
-                foreach (IBackupObject backupObject in backupObjects)
-                {
-                    archive.CreateEntryFromFile(backupObject.Path,);
-                    var x = new ZipArchiveFileSystem();
-                    x.
-                }
+                backupObject.Archive(stream);
             }
 
-            using (var fileStream = new FileStream(@"C:\Temp\test.zip", FileMode.Create))
+            using (Stream file = FileSystem.OpenFile(archivePath, FileMode.CreateNew, FileAccess.Write))
             {
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                memoryStream.CopyTo(fileStream);
+                stream.Seek(0, SeekOrigin.Begin);
+                stream.CopyTo(file);
             }
         }
-        */
+
+        return new Storage(archivePath);
     }
 }
