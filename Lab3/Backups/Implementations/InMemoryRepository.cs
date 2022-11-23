@@ -15,9 +15,9 @@ public class InMemoryRepository : Repository
     {
         UPath archivePath;
         if (backupObjects.Length > 1)
-            archivePath = backupsPath / @$"Restore Point {version} + /Single Storage.zip";
+            archivePath = backupsPath / @$"Restore Point {version}/Storage.zip";
         else
-            archivePath = backupsPath / @$"Restore Point {version} + /{backupObjects[0].GetName()}.zip";
+            archivePath = backupsPath / @$"Restore Point {version}/{backupObjects[0].GetName()}.zip";
         using (var stream = new MemoryStream())
         {
             foreach (IBackupObject backupObject in backupObjects)
