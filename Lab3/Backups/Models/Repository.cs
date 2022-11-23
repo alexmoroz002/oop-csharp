@@ -24,6 +24,6 @@ public abstract class Repository
 
     public void CreateFile(UPath path)
     {
-        FileSystem.CreateFile(path);
+        FileSystem.CreateFile(path).Dispose();
     }
 }
