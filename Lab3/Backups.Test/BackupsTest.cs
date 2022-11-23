@@ -47,18 +47,6 @@ public class BackupsTest
     }
 
     [Fact]
-    public void ArchiveObjectsOnDisk_ArchiveIsCreated()
-    {
-        Repository repo = CreateOnDiskDirectoryStructure(new PhysicalRepository());
-        var folderObject1 = new FolderObject(repo, @"\mnt\c\Test\b\c\d\d");
-        var folderObject2 = new FolderObject(repo, @"\mnt\c\Test\b\j");
-        var fileObject1 = new FileObject(repo, @"\mnt\c\Test\c\d\1.txt");
-        var fileObject2 = new FileObject(repo, @"\mnt\c\Test\e\2.txt");
-        Storage storage = repo.ArchiveObjects(@"\mnt\c\Test\BackupTask 1\", 1, folderObject1, folderObject2, fileObject1, fileObject2);
-        Assert.True(repo.FileSystem.FileExists(storage.ArchivePath));
-    }
-
-    [Fact]
     public void ArchiveObjectsUsingSingleStorage_ArchivesAreCreated()
     {
         Repository repo = CreateInMemoryDirectoryStructure(new InMemoryRepository());
@@ -72,22 +60,6 @@ public class BackupsTest
         backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
         backupTask.CreateBackup();
         Assert.True(repo.FileSystem.FileExists(@"/Test/Restore Point 1/Storage.zip"));
-    }
-
-    [Fact]
-    public void ArchiveObjectsUsingSingleStorageOnDisk_ArchivesAreCreated()
-    {
-        Repository repo = CreateOnDiskDirectoryStructure(new PhysicalRepository());
-        var config = new Config(new SingleStorageAlgorithm(), repo, @"/mnt/c/Testing");
-        var folderObject1 = new FolderObject(repo, @"\mnt\c\Test\b\c\d\d");
-        var folderObject2 = new FolderObject(repo, @"\mnt\c\Test\b\j");
-        var fileObject1 = new FileObject(repo, @"\mnt\c\Test\c\d\1.txt");
-        var fileObject2 = new FileObject(repo, @"\mnt\c\Test\e\2.txt");
-
-        var backupTask = new BackupTask(config);
-        backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
-        _ = backupTask.CreateBackup();
-        Assert.True(repo.FileSystem.FileExists(@"/mnt/c/Testing/Restore Point 1/Storage.zip"));
     }
 
     [Fact]
