@@ -8,7 +8,6 @@ namespace Backups.Implementations;
 
 public class FileObject : IBackupObject
 {
-    public UPath Path { get; }
     private Repository _repository;
 
     public FileObject(UPath path, Repository repository)
@@ -17,6 +16,13 @@ public class FileObject : IBackupObject
             throw new NotImplementedException();
         _repository = repository;
         Path = path;
+    }
+
+    public UPath Path { get; }
+
+    public string GetName()
+    {
+        return Path.GetName();
     }
 
     public Stream Archive(Stream source)

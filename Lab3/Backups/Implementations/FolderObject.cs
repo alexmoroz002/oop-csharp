@@ -20,11 +20,16 @@ public class FolderObject : IBackupObject
 
     public UPath Path { get; }
 
+    public string GetName()
+    {
+        return Path.GetName();
+    }
+
     public Stream Archive(Stream source)
     {
         using (var archive = new ZipArchiveFileSystem(source, ZipArchiveMode.Update, true))
         {
-            _repository.FileSystem.CopyDirectory(Path, archive, UPath.Root, true);
+            _repository.FileSystem.CopyDirectory(Path, archive, UPath.Root / Path.GetName(), true);
         }
 
         return source;
