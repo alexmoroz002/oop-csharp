@@ -10,7 +10,7 @@ public class FileObject : IBackupObject
 {
     private Repository _repository;
 
-    public FileObject(UPath path, Repository repository)
+    public FileObject(Repository repository, UPath path)
     {
         if (repository.FileSystem.GetAttributes(path) == FileAttributes.Directory)
             throw new NotImplementedException();
