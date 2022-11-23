@@ -7,8 +7,8 @@ namespace Backups.Implementations;
 
 public class SingleStorageAlgorithm : IAlgorithm
 {
-    public List<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, List<IBackupObject> objects)
+    public IEnumerable<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, IEnumerable<IBackupObject> objects)
     {
-        return new List<Storage> { repository.ArchiveObjects(backupsPath, version, objects.ToArray()) };
+        yield return repository.ArchiveObjects(backupsPath, version, objects.ToArray());
     }
 }

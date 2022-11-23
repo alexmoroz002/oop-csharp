@@ -7,8 +7,8 @@ namespace Backups.Implementations;
 
 public class SplitStorageAlgorithm : IAlgorithm
 {
-    public List<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, List<IBackupObject> objects)
+    public IEnumerable<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, IEnumerable<IBackupObject> objects)
     {
-        return objects.Select(backupObject => repository.ArchiveObjects(backupsPath, version, backupObject)).ToList();
+        return objects.Select(backupObject => repository.ArchiveObjects(backupsPath, version, backupObject));
     }
 }
