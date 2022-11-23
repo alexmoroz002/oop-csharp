@@ -1,5 +1,6 @@
 ﻿using Backups.Interfaces;
 using Backups.Models;
+using Zio;
 
 namespace Backups.Entities;
 
@@ -17,6 +18,7 @@ public class Config : IConfig
     public IAlgorithm Algorithm { get; }
 
     public Repository Repository { get; }
+    public UPath BackupPath { get; }
 
     public void AddObjects(params IBackupObject[] objects)
     {
@@ -30,7 +32,7 @@ public class Config : IConfig
         _trackedObjects.AddRange(objects);
     }
 
-    public void DeleteObjects(params IBackupObject[] objects)
+    public void RemoveObjects(params IBackupObject[] objects)
     {
         if (objects == null)
         {
