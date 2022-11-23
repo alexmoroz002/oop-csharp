@@ -20,7 +20,7 @@ public class PhysicalRepository : Repository
         if (backupObjects.Length > 1)
             archivePath = backupsPath / @$"Restore Point {version}/Storage.zip";
         else
-            archivePath = backupsPath / @$"Restore Point {version}/{backupObjects[0].GetName()}.zip";
+            archivePath = backupsPath / @$"Restore Point {version}/{backupObjects[0].Name}.zip";
         using (var stream = new MemoryStream())
         {
             foreach (IBackupObject backupObject in backupObjects)
@@ -28,7 +28,7 @@ public class PhysicalRepository : Repository
                 backupObject.Archive(stream);
             }
 
-            if (!Directory.Exists(archivePath.FullName))
+            if (!Directory.Exists(archivePath.GetDirectory().FullName))
                 CreateDirectory(archivePath.GetDirectory());
             using (Stream file = FileSystem.OpenFile(archivePath, FileMode.Create, FileAccess.ReadWrite))
             {
