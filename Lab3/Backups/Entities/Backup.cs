@@ -6,8 +6,16 @@ public class Backup : IBackup
 {
     private List<RestorePoint> _restorePoints;
 
-    public RestorePoint CreateRestorePoint(Config config)
+    public Backup()
     {
-        config.Repository.
+        BackupVersion = 1;
+        _restorePoints = new List<RestorePoint>();
+    }
+
+    public int BackupVersion { get; }
+
+    public RestorePoint CreateRestorePoint(IConfig config)
+    {
+        throw new NotImplementedException();
     }
 }
