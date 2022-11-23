@@ -12,10 +12,15 @@ public class Backup : IBackup
         _restorePoints = new List<RestorePoint>();
     }
 
-    public int BackupVersion { get; }
+    public int BackupVersion { get; private set; }
+    public IReadOnlyList<RestorePoint> RestorePoints => _restorePoints;
 
     public RestorePoint CreateRestorePoint(IConfig config)
     {
-        throw new NotImplementedException();
+        List<Storage> storages = config.Algorithm.ArchiveObject(config.Repository, config.BackupPath, BackupVersion, config.BackupObjects);
+        BackupVersion++;
+        var restorePoint = new RestorePoint(config.BackupObjects.ToList(), storages);
+        _restorePoints.Add(restorePoint);
+        return restorePoint;
     }
 }
