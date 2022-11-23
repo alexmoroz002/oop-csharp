@@ -1,15 +1,14 @@
 ﻿using Backups.Entities;
 using Backups.Interfaces;
 using Backups.Models;
+using Zio;
 
 namespace Backups.Implementations;
 
 public class SingleStorageAlgorithm : IAlgorithm
 {
-    public List<Storage> ArchiveObject(Repository repository, List<IBackupObject> objects)
+    public List<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, List<IBackupObject> objects)
     {
-        var archive = new List<Storage>();
-        archive.Add(repository.ArchiveObjects(objects.ToArray()));
-        return archive;
+        return new List<Storage> { repository.ArchiveObjects(backupsPath, version, objects.ToArray()) };
     }
 }
