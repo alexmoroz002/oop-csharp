@@ -1,4 +1,5 @@
 ﻿using Backups.Entities;
+using Backups.Exceptions;
 using Backups.Implementations;
 using Backups.Models;
 using Xunit;
@@ -21,16 +22,16 @@ public class BackupsTest
     public void CreateBackupObjects_ObjectsCreatedSuccessfully()
     {
         Repository repo = CreateInMemoryDirectoryStructure(new InMemoryRepository());
-        _ = new FolderObject(repo, @"/a/b/c/d");
-        _ = new FileObject(repo, @"\b\j\1.txt");
+        new FolderObject(repo, @"/a/b/c/d");
+        new FileObject(repo, @"\b\j\1.txt");
     }
 
     [Fact]
     public void CreateInvalidBackupObjects_ThrowException()
     {
         Repository repo = CreateInMemoryDirectoryStructure(new InMemoryRepository());
-        Assert.Throws<NotImplementedException>(() => _ = new FileObject(repo, @"\b\j"));
-        Assert.Throws<NotImplementedException>(() => _ = new FolderObject(repo, @"\b\j\1.txt"));
+        Assert.Throws<FileObjectException>(() => new FileObject(repo, @"\b\j"));
+        Assert.Throws<FolderObjectException>(() => new FolderObject(repo, @"\b\j\1.txt"));
     }
 
     [Fact]
@@ -55,6 +56,56 @@ public class BackupsTest
         var fileObject2 = new FileObject(repo, @"\mnt\c\Test\e\2.txt");
         Storage storage = repo.ArchiveObjects(@"\mnt\c\Test\BackupTask 1\", 1, folderObject1, folderObject2, fileObject1, fileObject2);
         Assert.True(repo.FileSystem.FileExists(storage.ArchivePath));
+    }
+
+    [Fact]
+    public void ArchiveObjectsUsingSingleStorage_ArchivesAreCreated()
+    {
+        Repository repo = CreateInMemoryDirectoryStructure(new InMemoryRepository());
+        var config = new Config(new SingleStorageAlgorithm(), repo, UPath.Root / @"Test");
+        var folderObject1 = new FolderObject(repo, @"\a\e");
+        var folderObject2 = new FolderObject(repo, @"\b\j");
+        var fileObject1 = new FileObject(repo, @"\a\b\c\d\1.txt");
+        var fileObject2 = new FileObject(repo, @"\a\e\2.txt");
+
+        var backupTask = new BackupTask(config);
+        backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
+        backupTask.CreateBackup();
+        Assert.True(repo.FileSystem.FileExists(@"/Test/Restore Point 1/Storage.zip"));
+    }
+
+    [Fact]
+    public void ArchiveObjectsUsingSingleStorageOnDisk_ArchivesAreCreated()
+    {
+        Repository repo = CreateOnDiskDirectoryStructure(new PhysicalRepository());
+        var config = new Config(new SingleStorageAlgorithm(), repo, @"/mnt/c/Testing");
+        var folderObject1 = new FolderObject(repo, @"\mnt\c\Test\b\c\d\d");
+        var folderObject2 = new FolderObject(repo, @"\mnt\c\Test\b\j");
+        var fileObject1 = new FileObject(repo, @"\mnt\c\Test\c\d\1.txt");
+        var fileObject2 = new FileObject(repo, @"\mnt\c\Test\e\2.txt");
+
+        var backupTask = new BackupTask(config);
+        backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
+        _ = backupTask.CreateBackup();
+        Assert.True(repo.FileSystem.FileExists(@"/mnt/c/Testing/Restore Point 1/Storage.zip"));
+    }
+
+    [Fact]
+    public void ArchiveObjectsUsingSplitStorage_ThreeStoragesCreated()
+    {
+        Repository repo = CreateInMemoryDirectoryStructure(new InMemoryRepository());
+        var config = new Config(new SplitStorageAlgorithm(), repo, UPath.Root / @"Test");
+        var fileObject1 = new FileObject(repo, @"\a\b\c\d\1.txt");
+        var fileObject2 = new FileObject(repo, @"\a\e\2.txt");
+        var backupTask = new BackupTask(config);
+        backupTask.CheckObjectsToBackup(fileObject2, fileObject1);
+        backupTask.CreateBackup();
+        Assert.True(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 1/1.txt.zip")
+                    && config.Repository.FileSystem.FileExists(@"/Test/Restore Point 1/2.txt.zip"));
+        backupTask.UncheckObjectsToBackup(fileObject1);
+        backupTask.CreateBackup();
+        Assert.True(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 2/2.txt.zip"));
+        Assert.False(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 2/1.txt.zip"));
     }
 
     private InMemoryRepository CreateInMemoryDirectoryStructure(InMemoryRepository repository)
