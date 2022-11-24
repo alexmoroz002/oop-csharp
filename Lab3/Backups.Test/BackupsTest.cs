@@ -15,7 +15,7 @@ public class BackupsTest
         var repo = new InMemoryRepository();
         repo.CreateDirectory(UPath.Root / "Test");
         repo.CreateFile(UPath.Root / "Test" / "1.zip");
-        Assert.True(repo.FileSystem.FileExists(@"/Test/1.zip"));
+        Assert.True(repo.FileExists(@"/Test/1.zip"));
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class BackupsTest
         var fileObject1 = new FileObject(repo, @"\a\b\c\d\1.txt");
         var fileObject2 = new FileObject(repo, @"\a\e\2.txt");
         Storage storage = repo.ArchiveObjects(@"\BackupTask 1\", 1, folderObject1, folderObject2, fileObject1, fileObject2);
-        Assert.True(repo.FileSystem.FileExists(storage.ArchivePath));
+        Assert.True(repo.FileExists(storage.ArchivePath));
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class BackupsTest
         var backupTask = new BackupTask(config);
         backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
         backupTask.CreateBackup();
-        Assert.True(repo.FileSystem.FileExists(@"/Test/Restore Point 1/Storage.zip"));
+        Assert.True(repo.FileExists(@"/Test/Restore Point 1/Storage.zip"));
     }
 
     [Fact]
@@ -72,12 +72,12 @@ public class BackupsTest
         var backupTask = new BackupTask(config);
         backupTask.CheckObjectsToBackup(fileObject2, fileObject1);
         backupTask.CreateBackup();
-        Assert.True(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 1/1.txt.zip")
-                    && config.Repository.FileSystem.FileExists(@"/Test/Restore Point 1/2.txt.zip"));
+        Assert.True(config.Repository.FileExists(@"/Test/Restore Point 1/1.txt.zip")
+                    && config.Repository.FileExists(@"/Test/Restore Point 1/2.txt.zip"));
         backupTask.UncheckObjectsToBackup(fileObject1);
         backupTask.CreateBackup();
-        Assert.True(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 2/2.txt.zip"));
-        Assert.False(config.Repository.FileSystem.FileExists(@"/Test/Restore Point 2/1.txt.zip"));
+        Assert.True(config.Repository.FileExists(@"/Test/Restore Point 2/2.txt.zip"));
+        Assert.False(config.Repository.FileExists(@"/Test/Restore Point 2/1.txt.zip"));
     }
 
     private InMemoryRepository CreateInMemoryDirectoryStructure(InMemoryRepository repository)
@@ -91,20 +91,6 @@ public class BackupsTest
         repository.CreateFile(@"\a\b\c\d\1.txt");
         repository.CreateFile(@"\a\e\2.txt");
         repository.CreateFile(@"\b\j\1.txt");
-        return repository;
-    }
-
-    private PhysicalRepository CreateOnDiskDirectoryStructure(PhysicalRepository repository)
-    {
-        repository.CreateDirectory(@"\mnt\c\Test\BackupTask 1\");
-        repository.CreateDirectory(@"\mnt\c\Test\c\d");
-        repository.CreateDirectory(@"\mnt\c\Test\e\");
-        repository.CreateDirectory(@"\mnt\c\Test\b\c\d\d");
-        repository.CreateDirectory(@"\mnt\c\Test\b\j");
-
-        repository.CreateFile(@"\mnt\c\Test\c\d\1.txt");
-        repository.CreateFile(@"\mnt\c\Test\e\2.txt");
-        repository.CreateFile(@"\mnt\c\Test\b\j\1.txt");
         return repository;
     }
 }

@@ -13,7 +13,7 @@ public class FolderObject : IBackupObject
 
     public FolderObject(Repository repository, UPath path)
     {
-        if (repository.FileSystem.GetAttributes(path) != FileAttributes.Directory)
+        if (repository.GetObjectAttributes(path) != FileAttributes.Directory)
             throw FolderObjectException.InvalidObjectType(path);
         _repository = repository;
         Path = path;
@@ -27,7 +27,7 @@ public class FolderObject : IBackupObject
     {
         using (var archive = new ZipArchiveFileSystem(source, ZipArchiveMode.Update, true))
         {
-            _repository.FileSystem.CopyDirectory(Path, archive, UPath.Root / Path.GetName(), true);
+            _repository.CopyDirectory(Path, archive, UPath.Root / Path.GetName(), true);
         }
 
         return source;

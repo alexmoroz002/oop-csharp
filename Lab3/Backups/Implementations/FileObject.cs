@@ -13,7 +13,7 @@ public class FileObject : IBackupObject
 
     public FileObject(Repository repository, UPath path)
     {
-        if (repository.FileSystem.GetAttributes(path) == FileAttributes.Directory)
+        if (repository.GetObjectAttributes(path) == FileAttributes.Directory)
             throw FileObjectException.InvalidObjectType(path);
         _repository = repository;
         Path = path;
@@ -27,7 +27,7 @@ public class FileObject : IBackupObject
     {
         using (var archive = new ZipArchiveFileSystem(source, ZipArchiveMode.Update, true))
         {
-            _repository.FileSystem.CopyFileCross(Path, archive, UPath.Root / Path.GetName(), true);
+            _repository.CopyFile(Path, archive, UPath.Root / Path.GetName(), true);
         }
 
         return source;
