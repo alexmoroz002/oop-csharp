@@ -9,17 +9,16 @@ namespace Backups.Implementations;
 
 public class FileObject : IBackupObject
 {
-    private Repository _repository;
-
     public FileObject(Repository repository, UPath path)
     {
         if (repository.GetObjectAttributes(path) == FileAttributes.Directory)
             throw FileObjectException.InvalidObjectType(path);
-        _repository = repository;
+        Repository = repository;
         Path = path;
     }
 
     public UPath Path { get; }
+    public Repository Repository { get; }
 
     public string Name => Path.GetName();
 
@@ -27,7 +26,7 @@ public class FileObject : IBackupObject
     {
         using (var archive = new ZipArchiveFileSystem(source, ZipArchiveMode.Update, true))
         {
-            _repository.CopyFile(Path, archive, UPath.Root / Path.GetName(), true);
+            Repository.CopyFile(Path, archive, UPath.Root / Path.GetName(), true);
         }
 
         return source;
