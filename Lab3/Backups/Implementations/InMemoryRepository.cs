@@ -14,6 +14,10 @@ public class InMemoryRepository : Repository
     public override Storage ArchiveObjects(UPath backupsPath, int version, params IBackupObject[] backupObjects)
     {
         UPath archivePath;
+        if (backupsPath == null)
+            throw new ArgumentNullException(nameof(backupsPath));
+        if (backupObjects == null)
+            throw new ArgumentNullException(nameof(backupObjects));
         if (backupObjects.Length > 1)
             archivePath = backupsPath / @$"Restore Point {version}/Storage.zip";
         else
@@ -22,6 +26,8 @@ public class InMemoryRepository : Repository
         {
             foreach (IBackupObject backupObject in backupObjects)
             {
+                if (backupObject == null)
+                    throw new ArgumentNullException(nameof(backupObject));
                 backupObject.Archive(stream);
             }
 

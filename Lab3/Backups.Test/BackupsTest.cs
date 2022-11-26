@@ -58,7 +58,7 @@ public class BackupsTest
 
         var backupTask = new BackupTask(config);
         backupTask.CheckObjectsToBackup(folderObject1, fileObject2, folderObject2, fileObject1);
-        backupTask.CreateBackup();
+        backupTask.CreateRestorePoint();
         Assert.True(repo.FileExists(@"/Test/Restore Point 1/Storage.zip"));
     }
 
@@ -71,11 +71,11 @@ public class BackupsTest
         var fileObject2 = new FileObject(repo, @"\a\e\2.txt");
         var backupTask = new BackupTask(config);
         backupTask.CheckObjectsToBackup(fileObject2, fileObject1);
-        backupTask.CreateBackup();
+        backupTask.CreateRestorePoint();
         Assert.True(config.Repository.FileExists(@"/Test/Restore Point 1/1.txt.zip")
                     && config.Repository.FileExists(@"/Test/Restore Point 1/2.txt.zip"));
         backupTask.UncheckObjectsToBackup(fileObject1);
-        backupTask.CreateBackup();
+        backupTask.CreateRestorePoint();
         Assert.True(config.Repository.FileExists(@"/Test/Restore Point 2/2.txt.zip"));
         Assert.False(config.Repository.FileExists(@"/Test/Restore Point 2/1.txt.zip"));
     }

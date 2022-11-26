@@ -9,9 +9,9 @@ public class RestorePoint : IRestorePoint
 
     public RestorePoint(List<IBackupObject> objects, List<Storage> storages)
     {
-        _backupObjects = objects;
+        _backupObjects = objects ?? throw new ArgumentNullException(nameof(objects));
         CreationTime = DateTime.Now;
-        _storages = storages;
+        _storages = storages ?? throw new ArgumentNullException(nameof(storages));
     }
 
     public IReadOnlyList<Storage> Storages => _storages;

@@ -6,7 +6,7 @@ public interface IBackupTask
 {
     IConfig Config { get; }
     Backup Backup { get; }
-    RestorePoint CreateBackup();
+    RestorePoint CreateRestorePoint();
     void CheckObjectsToBackup(params IBackupObject[] objects);
     void UncheckObjectsToBackup(params IBackupObject[] objects);
 }

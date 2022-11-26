@@ -17,6 +17,8 @@ public class Backup : IBackup
 
     public RestorePoint CreateRestorePoint(IConfig config)
     {
+        if (config == null)
+            throw new ArgumentNullException("config");
         List<Storage> storages = config.Algorithm.ArchiveObject(config.Repository, config.BackupPath, BackupVersion, config.BackupObjects);
         BackupVersion++;
         var restorePoint = new RestorePoint(config.BackupObjects.ToList(), storages);

@@ -11,15 +11,17 @@ public class Config : IConfig
 
     public Config(IAlgorithm algorithm, Repository repository, UPath backupPath)
     {
-        Algorithm = algorithm;
-        Repository = repository;
+        Algorithm = algorithm ?? throw new ArgumentNullException(nameof(algorithm));
+        Repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        if (backupPath == null)
+            throw new ArgumentNullException(nameof(backupPath));
         _trackedObjects = new List<IBackupObject>();
         if (!backupPath.IsAbsolute)
             throw ConfigException.PathIsRelativeException(backupPath);
         BackupPath = backupPath;
     }
 
-    public IAlgorithm Algorithm { get; }
+    public IAlgorithm Algorithm { get; private set; }
 
     public Repository Repository { get; }
     public UPath BackupPath { get; }
@@ -46,5 +48,10 @@ public class Config : IConfig
         }
 
         _trackedObjects = _trackedObjects.Except(objects).ToList();
+    }
+
+    public void ChangeBackupAlgorithm(IAlgorithm newAlgorithm)
+    {
+        Algorithm = newAlgorithm;
     }
 }

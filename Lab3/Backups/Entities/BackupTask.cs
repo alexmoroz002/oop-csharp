@@ -7,13 +7,13 @@ public class BackupTask : IBackupTask
     public BackupTask(IConfig config)
     {
         Backup = new Backup();
-        Config = config;
+        Config = config ?? throw new ArgumentNullException("config");
     }
 
     public IConfig Config { get; }
     public Backup Backup { get; }
 
-    public RestorePoint CreateBackup()
+    public RestorePoint CreateRestorePoint()
     {
         return Backup.CreateRestorePoint(Config);
     }

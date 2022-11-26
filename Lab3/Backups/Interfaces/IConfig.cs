@@ -11,4 +11,5 @@ public interface IConfig
     IReadOnlyList<IBackupObject> BackupObjects { get; }
     void AddObjects(params IBackupObject[] objects);
     void RemoveObjects(params IBackupObject[] objects);
+    void ChangeBackupAlgorithm(IAlgorithm newAlgorithm);
 }

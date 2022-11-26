@@ -11,8 +11,12 @@ public class FolderObject : IBackupObject
 {
     public FolderObject(Repository repository, UPath path)
     {
+        if (repository == null)
+            throw new ArgumentNullException(nameof(repository));
         if (repository.GetObjectAttributes(path) != FileAttributes.Directory)
             throw FolderObjectException.InvalidObjectType(path);
+        if (path == null)
+            throw new ArgumentNullException(nameof(path));
         Repository = repository;
         Path = path;
     }
@@ -25,6 +29,8 @@ public class FolderObject : IBackupObject
 
     public Stream Archive(Stream source)
     {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
         using (var archive = new ZipArchiveFileSystem(source, ZipArchiveMode.Update, true))
         {
             Repository.CopyDirectory(Path, archive, UPath.Root / Path.GetName(), true);
