@@ -2,6 +2,5 @@
 
 public interface IPercentAccruable
 {
-    DateOnly EndDate { get; }
     void AccrueDailyPercent(int dailyPercent);
 }
