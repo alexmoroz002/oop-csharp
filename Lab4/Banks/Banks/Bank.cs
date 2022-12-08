@@ -5,21 +5,31 @@ namespace Banks.Banks;
 
 public class Bank : IBank
 {
-    private List<IClient> _clients;
-    private List<IBankAccount> _accounts;
+    private const decimal DefaultCommission = 5;
+    private List<IClient> _clients = new ();
+    private List<IBankAccount> _accounts = new ();
+
+    public Bank(string name, int interestRateYear)
+    {
+        Name = name;
+        InterestRateYear = interestRateYear;
+        CommissionAmount = DefaultCommission;
+    }
+
     public string Name { get; }
-    public int InterestRateYear { get; }
-    public decimal CommissionAmount { get; }
+    public int InterestRateYear { get; private set; }
+    public decimal CommissionAmount { get; private set; }
     public IReadOnlyList<IClient> Clients => _clients;
     public IReadOnlyList<IBankAccount> BankAccounts => _accounts;
-    public void ChangeInterestRate()
+
+    public void ChangeInterestRate(int newInterest)
     {
         throw new NotImplementedException();
     }
 
-    public void ChangeCommissionAmount()
+    public void ChangeCommissionAmount(decimal newCommission)
     {
-        throw new NotImplementedException();
+        CommissionAmount = newCommission;
     }
 
     public void ChargeCommissions()
@@ -32,12 +42,12 @@ public class Bank : IBank
         throw new NotImplementedException();
     }
 
-    public void PerformTransaction()
+    public void PerformTransaction(Guid srcAccount, decimal money, Guid destAccount)
     {
         throw new NotImplementedException();
     }
 
-    public void CancelTransaction()
+    public void CancelTransaction(Guid transactionGuid)
     {
         throw new NotImplementedException();
     }

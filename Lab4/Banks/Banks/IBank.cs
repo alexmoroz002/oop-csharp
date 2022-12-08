@@ -10,8 +10,8 @@ public interface IBank
     decimal CommissionAmount { get; }
     IReadOnlyList<IClient> Clients { get; }
     IReadOnlyList<IBankAccount> BankAccounts { get; }
-    void ChangeInterestRate();
-    void ChangeCommissionAmount();
-    void PerformTransaction();
-    void CancelTransaction();
+    void ChangeInterestRate(int newInterest);
+    void ChangeCommissionAmount(decimal newCommission);
+    void PerformTransaction(Guid srcAccount, decimal money, Guid destAccount);
+    void CancelTransaction(Guid transactionGuid);
 }
