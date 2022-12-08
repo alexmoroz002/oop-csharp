@@ -16,6 +16,7 @@ public class Client : IClient
         Surname = builder.Surname;
         Address = builder.Address;
         Passport = builder.Passport;
+        _accounts = new List<IBankAccount>();
     }
 
     public string Name { get; init; }
@@ -60,9 +61,4 @@ public class Client : IClient
 
     public bool IsSuspicious { get; private set; }
     public IReadOnlyList<IBankAccount> Accounts { get; }
-
-    public void TransferMoney()
-    {
-        throw new NotImplementedException();
-    }
 }
