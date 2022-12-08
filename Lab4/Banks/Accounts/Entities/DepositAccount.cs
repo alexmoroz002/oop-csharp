@@ -9,13 +9,12 @@ public class DepositAccount : IBankAccount, IPercentAccruable
     public IReadOnlyList<ITransaction> Transactions { get; }
     public decimal Money { get; private set; }
     public decimal SuspiciousAccountTransactionLimit { get; }
+    public DateOnly EndDate { get; }
 
     public void UpdateTerms()
     {
         IsSuspicious = false;
     }
-
-    public DateOnly EndDate { get; }
 
     public void AccrueDailyPercent(int dailyPercent)
     {
