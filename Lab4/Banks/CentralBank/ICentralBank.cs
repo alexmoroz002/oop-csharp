@@ -1,4 +1,6 @@
-﻿namespace Banks.Banks.CentralBank;
+﻿using Banks.Banks;
+
+namespace Banks.CentralBank;
 
 public interface ICentralBank
 {
