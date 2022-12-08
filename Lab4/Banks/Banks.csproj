@@ -9,6 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Models\**" />
+      <EmbeddedResource Remove="Models\**" />
+      <None Remove="Models\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\.editorconfig" />
     </ItemGroup>
 
@@ -20,12 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\" />
       <Folder Include="Exceptions\" />
-      <Folder Include="Builder\" />
-      <Folder Include="Interfaces\" />
-      <Folder Include="Models\" />
-      <Folder Include="Services\" />
+      <Folder Include="Client\Builder\" />
+      <Folder Include="Transactions\" />
     </ItemGroup>
 
 </Project>
