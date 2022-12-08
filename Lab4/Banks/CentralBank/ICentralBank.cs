@@ -4,5 +4,8 @@ namespace Banks.CentralBank;
 
 public interface ICentralBank
 {
-    IBank RegisterBank();
+    int InterestRate { get; }
+    DateOnly SystemDate { get; }
+    IReadOnlyList<IBank> Banks { get; }
+    IBank RegisterBank(string name);
 }
