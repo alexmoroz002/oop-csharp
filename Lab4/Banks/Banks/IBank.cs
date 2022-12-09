@@ -1,4 +1,5 @@
 ﻿using Banks.Accounts.Interfaces;
+using Banks.Banks.Config;
 using Banks.Client;
 
 namespace Banks.Banks;
@@ -6,12 +7,11 @@ namespace Banks.Banks;
 public interface IBank
 {
     string Name { get; }
-    int InterestRateYear { get; }
-    decimal CommissionAmount { get; }
+    IConfig Config { get; }
     IReadOnlyList<IClient> Clients { get; }
     IReadOnlyList<IBankAccount> BankAccounts { get; }
-    void ChangeInterestRate(int newInterest);
-    void ChangeCommissionAmount(decimal newCommission);
-    void PerformTransaction(Guid srcAccount, decimal money, Guid destAccount);
-    void CancelTransaction(Guid transactionGuid);
+    void ChangeAccountTerms(IConfig newConfig);
+    void AccruePercents();
+    Guid PerformTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount);
+    void CancelTransaction(IClient client, Guid transactionGuid);
 }

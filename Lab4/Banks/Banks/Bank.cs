@@ -1,54 +1,58 @@
 ﻿using Banks.Accounts.Interfaces;
+using Banks.Banks.Config;
 using Banks.Client;
+using Banks.Transactions;
 
 namespace Banks.Banks;
 
 public class Bank : IBank
 {
-    private const decimal DefaultCommission = 5;
     private List<IClient> _clients = new ();
     private List<IBankAccount> _accounts = new ();
 
-    public Bank(string name, int interestRateYear)
+    public Bank(string name, IConfig config)
     {
+        Config = config;
         Name = name;
-        InterestRateYear = interestRateYear;
-        CommissionAmount = DefaultCommission;
     }
 
     public string Name { get; }
-    public int InterestRateYear { get; private set; }
-    public decimal CommissionAmount { get; private set; }
+    public IConfig Config { get; private set; }
     public IReadOnlyList<IClient> Clients => _clients;
     public IReadOnlyList<IBankAccount> BankAccounts => _accounts;
 
-    public void ChangeInterestRate(int newInterest)
+    public void ChangeAccountTerms(IConfig newConfig)
     {
-        throw new NotImplementedException();
-    }
-
-    public void ChangeCommissionAmount(decimal newCommission)
-    {
-        CommissionAmount = newCommission;
-    }
-
-    public void ChargeCommissions()
-    {
-        throw new NotImplementedException();
+        Config = newConfig;
     }
 
     public void AccruePercents()
     {
-        throw new NotImplementedException();
+        foreach (IBankAccount bankAccount in BankAccounts)
+        {
+            bankAccount.AccrueDailyPercent();
+        }
     }
 
-    public void PerformTransaction(Guid srcAccount, decimal money, Guid destAccount)
+    public Guid PerformTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount)
     {
-        throw new NotImplementedException();
+        if (srcAccount.Money < money)
+        {
+            throw new ArgumentException();
+        }
+
+        srcAccount.TakeMoney(money); // (decimal money, bool override = false) ?
+        destAccount.PutMoney(money); // -//-
+        return srcAccount.AddTransaction(srcAccount, money, destAccount);
     }
 
-    public void CancelTransaction(Guid transactionGuid)
+    public void CancelTransaction(IClient client, Guid transactionGuid)
     {
-        throw new NotImplementedException();
+        ITransaction transaction = client.Accounts
+            .SelectMany(x => x.Transactions)
+            .FirstOrDefault(x => x.TransactionId == transactionGuid) ?? throw new ArgumentException();
+        transaction.DestAccount.TakeMoney(transaction.Money);
+        transaction.SrcAccount.PutMoney(transaction.Money);
+        transaction.SrcAccount.RemoveTransaction(transactionGuid);
     }
 }

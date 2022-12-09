@@ -1,23 +1,57 @@
 ﻿using Banks.Accounts.Interfaces;
+using Banks.Banks;
 using Banks.Transactions;
 
 namespace Banks.Accounts.Entities;
 
-public class CreditAccount : IBankAccount, ICommissionChargeable
+public class CreditAccount : IBankAccount
 {
-    public bool IsSuspicious { get; }
-    public IReadOnlyList<ITransaction> Transactions { get; }
-    public decimal Money { get; private set; }
-    public decimal SuspiciousAccountTransactionLimit { get; }
+    private List<Transaction> _transactions;
 
-    public void UpdateTerms()
+    public CreditAccount(IBank bank, bool isSuspicious)
     {
-        throw new NotImplementedException();
+        Bank = bank;
+        IsSuspicious = isSuspicious;
+        _transactions = new List<Transaction>();
     }
 
-    public decimal CreditLimit { get; }
+    public bool IsSuspicious { get; private set; }
+    public IReadOnlyList<ITransaction> Transactions => _transactions;
+    public decimal Money { get; private set; }
+    public IBank Bank { get; }
 
-    public void ChargeCommission(decimal commission)
+    public void RemoveSuspiciousLimits()
+    {
+        IsSuspicious = false;
+    }
+
+    public Guid AddTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount)
+    {
+        var transaction = new Transaction(srcAccount, money, destAccount);
+        _transactions.Add(transaction);
+        return transaction.TransactionId;
+    }
+
+    public void RemoveTransaction(Guid transactionGuid)
+    {
+        int removed = _transactions.RemoveAll(x => x.TransactionId == transactionGuid);
+        if (removed == 0)
+            throw new ArgumentException();
+    }
+
+    public void PutMoney(decimal amount)
+    {
+        Money += amount;
+    }
+
+    public void TakeMoney(decimal amount)
+    {
+        if (Money - amount < Bank.Config.CreditAccountLimit)
+            throw new ArgumentException();
+        Money -= amount;
+    }
+
+    public void AccrueDailyPercent()
     {
         throw new NotImplementedException();
     }
