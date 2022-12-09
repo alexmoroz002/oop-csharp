@@ -29,14 +29,14 @@ public class Client : IClient
         set
         {
             if (_passport != null)
-                throw new NotImplementedException();
+                throw new ArgumentException();
             _passport = value;
             if (Passport == null || Address == null) return;
 
             IsSuspicious = false;
             foreach (IBankAccount bankAccount in _accounts)
             {
-                bankAccount.UpdateTerms();
+                bankAccount.RemoveSuspiciousLimits();
             }
         }
     }
@@ -47,14 +47,14 @@ public class Client : IClient
         set
         {
             if (_address != null)
-                throw new NotImplementedException();
+                throw new ArgumentException();
             _address = value;
             if (Passport == null || Address == null) return;
 
             IsSuspicious = false;
             foreach (IBankAccount bankAccount in _accounts)
             {
-                bankAccount.UpdateTerms();
+                bankAccount.RemoveSuspiciousLimits();
             }
         }
     }

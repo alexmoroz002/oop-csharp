@@ -1,4 +1,5 @@
 ﻿using Banks.Banks;
+using Banks.Banks.Config;
 
 namespace Banks.CentralBank;
 
@@ -10,18 +11,30 @@ public class CentralBank : ICentralBank
     {
         SystemDate = DateOnly.FromDateTime(DateTime.Now);
         _banks = new List<IBank>();
-        InterestRate = 10;
     }
 
-    public int InterestRate { get; }
     public DateOnly SystemDate { get; }
-
     public IReadOnlyList<IBank> Banks => _banks;
 
-    public IBank RegisterBank(string name)
+    public IBank RegisterBank(string name, IConfig config)
     {
-        var bank = new Bank(name, InterestRate);
+        var bank = new Bank(name, config);
         _banks.Add(bank);
         return bank;
+    }
+
+    public ICentralBank PlusDay()
+    {
+        throw new NotImplementedException();
+    }
+
+    public ICentralBank PlusMonth()
+    {
+        throw new NotImplementedException();
+    }
+
+    public ICentralBank PlusYear()
+    {
+        throw new NotImplementedException();
     }
 }
