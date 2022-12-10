@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Banks.Banks;
-using Banks.Banks.Config;
+﻿using Banks.Banks.Config;
 
-namespace Banks.CentralBank;
+namespace Banks.Banks;
 
 public class CentralBank : ICentralBank
 {
