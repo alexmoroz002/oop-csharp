@@ -48,6 +48,8 @@ public class CreditAccount : IBankAccount
     {
         if (Money - amount < Bank.Config.CreditAccountLimit)
             throw new ArgumentException();
+        if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
+            throw new ArgumentException();
         Money -= amount;
     }
 

@@ -49,11 +49,13 @@ public class DebitAccount : IBankAccount
     public void TakeMoney(decimal amount)
     {
         Money -= amount;
+        if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
+            throw new ArgumentException();
     }
 
     public void AccumulateDailyPercent()
     {
-        _accumulatedMoney += Money * (Bank.Config.DebitInterest / 365);
+        _accumulatedMoney += Money * (Bank.Config.DebitInterest / 100 / 365);
     }
 
     public void AccruePercents()

@@ -26,7 +26,7 @@ public class DepositAccount : IBankAccount
         };
     }
 
-    public int InterestRate { get; }
+    public decimal InterestRate { get; }
     public bool IsSuspicious { get; private set; }
     public IReadOnlyList<ITransaction> Transactions => _transactions;
     public decimal Money { get; private set; }
@@ -62,17 +62,20 @@ public class DepositAccount : IBankAccount
     {
         if (ActiveMonth < AccountTermMonth)
             throw new ArgumentException();
+        if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
+            throw new ArgumentException();
         Money -= amount;
     }
 
     public void AccumulateDailyPercent()
     {
-        _accumulatedMoney += Money * (InterestRate / 365);
+        _accumulatedMoney += Money * (InterestRate / 100 / 365);
     }
 
     public void AccruePercents()
     {
         Money += _accumulatedMoney;
         _accumulatedMoney = 0;
+        ActiveMonth++;
     }
 }
