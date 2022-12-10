@@ -7,12 +7,14 @@ namespace Banks.Accounts.Entities;
 public class DebitAccount : IBankAccount
 {
     private List<Transaction> _transactions;
+    private decimal _accumulatedMoney;
 
     public DebitAccount(IBank bank, bool isSuspicious)
     {
         IsSuspicious = isSuspicious;
         _transactions = new List<Transaction>();
         Bank = bank;
+        _accumulatedMoney = 0;
     }
 
     public bool IsSuspicious { get; private set; }
@@ -49,8 +51,14 @@ public class DebitAccount : IBankAccount
         Money -= amount;
     }
 
-    public void AccrueDailyPercent()
+    public void AccumulateDailyPercent()
     {
-        throw new NotImplementedException();
+        _accumulatedMoney += Money * (Bank.Config.DebitInterest / 365);
+    }
+
+    public void AccruePercents()
+    {
+        Money += _accumulatedMoney;
+        _accumulatedMoney = 0;
     }
 }

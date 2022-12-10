@@ -8,15 +8,25 @@ namespace Banks.Accounts.Entities;
 public class DepositAccount : IBankAccount
 {
     private List<Transaction> _transactions;
-    public DepositAccount(IBank bank, int? accountTermMonth, bool isSuspicious)
+    private decimal _accumulatedMoney;
+    public DepositAccount(IBank bank, int? accountTermMonth, decimal money, bool isSuspicious)
     {
         Bank = bank;
         AccountTermMonth = accountTermMonth;
         IsSuspicious = isSuspicious;
         _transactions = new List<Transaction>();
         ActiveMonth = 0;
+        Money = money;
+        _accumulatedMoney = 0;
+        InterestRate = Money switch
+        {
+            < 5000 => Bank.Config.DepositInterestFirst,
+            < 10000 => Bank.Config.DepositInterestSecond,
+            _ => Bank.Config.DepositInterestThird
+        };
     }
 
+    public int InterestRate { get; }
     public bool IsSuspicious { get; private set; }
     public IReadOnlyList<ITransaction> Transactions => _transactions;
     public decimal Money { get; private set; }
@@ -55,8 +65,14 @@ public class DepositAccount : IBankAccount
         Money -= amount;
     }
 
-    public void AccrueDailyPercent()
+    public void AccumulateDailyPercent()
     {
-        throw new NotImplementedException();
+        _accumulatedMoney += Money * (InterestRate / 365);
+    }
+
+    public void AccruePercents()
+    {
+        Money += _accumulatedMoney;
+        _accumulatedMoney = 0;
     }
 }

@@ -11,6 +11,7 @@ public interface IBank
     IReadOnlyList<IClient> Clients { get; }
     IReadOnlyList<IBankAccount> BankAccounts { get; }
     void ChangeAccountTerms(IConfig newConfig);
+    void AccumulateDailyPercents();
     void AccruePercents();
     Guid PerformTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount);
     void CancelTransaction(IClient client, Guid transactionGuid);

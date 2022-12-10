@@ -26,11 +26,19 @@ public class Bank : IBank
         Config = newConfig;
     }
 
+    public void AccumulateDailyPercents()
+    {
+        foreach (IBankAccount bankAccount in BankAccounts)
+        {
+            bankAccount.AccumulateDailyPercent();
+        }
+    }
+
     public void AccruePercents()
     {
         foreach (IBankAccount bankAccount in BankAccounts)
         {
-            bankAccount.AccrueDailyPercent();
+            bankAccount.AccruePercents();
         }
     }
 

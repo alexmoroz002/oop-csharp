@@ -51,8 +51,11 @@ public class CreditAccount : IBankAccount
         Money -= amount;
     }
 
-    public void AccrueDailyPercent()
+    public void AccumulateDailyPercent()
     {
-        throw new NotImplementedException();
+    }
+
+    public void AccruePercents()
+    {
     }
 }

@@ -9,7 +9,8 @@ public interface IBankAccount
     IReadOnlyList<ITransaction> Transactions { get; }
     decimal Money { get; }
     public IBank Bank { get; }
-    void AccrueDailyPercent();
+    void AccumulateDailyPercent();
+    void AccruePercents();
     void RemoveSuspiciousLimits();
     Guid AddTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount);
     void RemoveTransaction(Guid transactionGuid);
