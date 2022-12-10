@@ -1,6 +1,7 @@
 ﻿using Banks.Accounts.Interfaces;
 using Banks.Client.Builder;
 using Banks.Exceptions;
+using Banks.Notifications;
 
 namespace Banks.Client;
 
@@ -21,8 +22,8 @@ public class Client : IClient
     }
 
     public string Name { get; init; }
-
     public string Surname { get; init; }
+    public INotification Notification { get; set; } = new ConsoleNotification();
 
     public int? Passport
     {
@@ -71,6 +72,6 @@ public class Client : IClient
 
     public void Notify(string message)
     {
-        Console.WriteLine(message);
+        Notification.Notify(message);
     }
 }

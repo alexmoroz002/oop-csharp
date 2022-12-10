@@ -28,6 +28,7 @@
     <ItemGroup>
       <Folder Include="Exceptions\" />
       <Folder Include="Client\Builder\" />
+      <Folder Include="Notifications\" />
       <Folder Include="Transactions\" />
     </ItemGroup>
 

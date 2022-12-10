@@ -1,4 +1,5 @@
 ﻿using Banks.Accounts.Interfaces;
+using Banks.Notifications;
 
 namespace Banks.Client;
 
@@ -6,10 +7,10 @@ public interface IClient
 {
     string Name { get; init; }
     string Surname { get; init; }
-    public int? Passport { get; set; }
-    public string Address { get; set; }
+    int? Passport { get; set; }
+    string Address { get; set; }
     bool IsSuspicious { get; }
     IReadOnlyList<IBankAccount> Accounts { get; }
+    INotification Notification { get; }
     IBankAccount AddAccount(IBankAccount account);
-    void Notify(string message);
 }

@@ -123,7 +123,7 @@ public class Bank : IBank
     {
         foreach (IClient subscriber in _subscribers)
         {
-            subscriber.Notify(message);
+            subscriber.Notification.Notify(message);
         }
     }
 }
