@@ -2,7 +2,7 @@
 
 public class Config : IConfig
 {
-    public Config(int debitInterest, int depositInterestFirst, int depositInterestSecond, int depositInterestThird, decimal creditCommission, decimal suspiciousLimit, decimal creditLimit)
+    public Config(decimal debitInterest, decimal depositInterestFirst, decimal depositInterestSecond, decimal depositInterestThird, decimal creditCommission, decimal suspiciousLimit, decimal creditLimit)
     {
         DebitInterest = debitInterest;
         DepositInterestFirst = depositInterestFirst;
@@ -13,10 +13,10 @@ public class Config : IConfig
         CreditAccountLimit = creditLimit;
     }
 
-    public int DebitInterest { get; }
-    public int DepositInterestFirst { get; }
-    public int DepositInterestSecond { get; }
-    public int DepositInterestThird { get; }
+    public decimal DebitInterest { get; }
+    public decimal DepositInterestFirst { get; }
+    public decimal DepositInterestSecond { get; }
+    public decimal DepositInterestThird { get; }
     public decimal CreditCommission { get; }
     public decimal SuspiciousLimit { get; }
     public decimal CreditAccountLimit { get; }

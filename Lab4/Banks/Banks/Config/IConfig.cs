@@ -2,10 +2,10 @@
 
 public interface IConfig
 {
-    int DebitInterest { get; }
-    int DepositInterestFirst { get; }
-    int DepositInterestSecond { get; }
-    int DepositInterestThird { get; }
+    decimal DebitInterest { get; }
+    decimal DepositInterestFirst { get; }
+    decimal DepositInterestSecond { get; }
+    decimal DepositInterestThird { get; }
     decimal CreditCommission { get; }
     decimal SuspiciousLimit { get; }
     decimal CreditAccountLimit { get; }
