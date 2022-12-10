@@ -11,6 +11,7 @@ public class Bank : IBank
 {
     private List<IClient> _clients = new ();
     private List<IBankAccount> _accounts = new ();
+    private List<IClient> _subscribers = new ();
 
     public Bank(string name, IConfig config)
     {
@@ -22,6 +23,7 @@ public class Bank : IBank
     public IConfig Config { get; private set; }
     public IReadOnlyList<IClient> Clients => _clients;
     public IReadOnlyList<IBankAccount> BankAccounts => _accounts;
+    public IReadOnlyList<IClient> Subscribers => _subscribers;
 
     public IClient AddClient(IClient client)
     {
@@ -66,6 +68,7 @@ public class Bank : IBank
     public void ChangeAccountTerms(IConfig newConfig)
     {
         Config = newConfig;
+        NotifySubscribers("Terms changed");
     }
 
     public void AccumulateDailyPercents()
@@ -104,5 +107,23 @@ public class Bank : IBank
         transaction.DestAccount.TakeMoney(transaction.Money);
         transaction.SrcAccount.PutMoney(transaction.Money);
         transaction.SrcAccount.RemoveTransaction(transactionGuid);
+    }
+
+    public void AddSubscriber(IClient client)
+    {
+        _subscribers.Add(client);
+    }
+
+    public void DeleteSubscriber(IClient client)
+    {
+        _subscribers.Remove(client);
+    }
+
+    public void NotifySubscribers(string message)
+    {
+        foreach (IClient subscriber in _subscribers)
+        {
+            subscriber.Notify(message);
+        }
     }
 }

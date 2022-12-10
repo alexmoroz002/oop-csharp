@@ -68,4 +68,9 @@ public class Client : IClient
         _accounts.Add(account);
         return account;
     }
+
+    public void Notify(string message)
+    {
+        Console.WriteLine(message);
+    }
 }

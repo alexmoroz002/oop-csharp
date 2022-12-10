@@ -11,6 +11,7 @@ public interface IBank
     IConfig Config { get; }
     IReadOnlyList<IClient> Clients { get; }
     IReadOnlyList<IBankAccount> BankAccounts { get; }
+    IReadOnlyList<IClient> Subscribers { get; }
     IClient AddClient(IClient client);
     DebitAccount OpenDebitAccount(IClient client);
     DepositAccount OpenDepositAccount(IClient client, int termMonth, decimal money);
@@ -23,4 +24,6 @@ public interface IBank
     void AccruePercents();
     Guid PerformTransaction(IBankAccount srcAccount, decimal money, IBankAccount destAccount);
     void CancelTransaction(IClient client, Guid transactionGuid);
+    void AddSubscriber(IClient client);
+    void DeleteSubscriber(IClient client);
 }

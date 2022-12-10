@@ -9,6 +9,7 @@ public interface IClient
     public int? Passport { get; set; }
     public string Address { get; set; }
     bool IsSuspicious { get; }
-    public IReadOnlyList<IBankAccount> Accounts { get; }
-    public IBankAccount AddAccount(IBankAccount account);
+    IReadOnlyList<IBankAccount> Accounts { get; }
+    IBankAccount AddAccount(IBankAccount account);
+    void Notify(string message);
 }
