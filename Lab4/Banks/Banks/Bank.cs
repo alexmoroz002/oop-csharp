@@ -1,4 +1,5 @@
-﻿using Banks.Accounts.Interfaces;
+﻿using Banks.Accounts.Entities;
+using Banks.Accounts.Interfaces;
 using Banks.Banks.Config;
 using Banks.Client;
 using Banks.Transactions;
@@ -20,6 +21,46 @@ public class Bank : IBank
     public IConfig Config { get; private set; }
     public IReadOnlyList<IClient> Clients => _clients;
     public IReadOnlyList<IBankAccount> BankAccounts => _accounts;
+
+    public IClient AddClient(IClient client)
+    {
+        _clients.Add(client);
+        return client;
+    }
+
+    public DebitAccount OpenDebitAccount(IClient client)
+    {
+        var account = new DebitAccount(this, client.IsSuspicious);
+        _accounts.Add(account);
+        client.AddAccount(account);
+        return account;
+    }
+
+    public DepositAccount OpenDepositAccount(IClient client, int termMonth, decimal money)
+    {
+        var account = new DepositAccount(this, termMonth, money, client.IsSuspicious);
+        _accounts.Add(account);
+        client.AddAccount(account);
+        return account;
+    }
+
+    public CreditAccount OpenCreditAccount(IClient client)
+    {
+        var account = new CreditAccount(this, client.IsSuspicious);
+        _accounts.Add(account);
+        client.AddAccount(account);
+        return account;
+    }
+
+    public void PutMoney(IBankAccount account, decimal money)
+    {
+        account.PutMoney(money);
+    }
+
+    public void TakeMoney(IBankAccount account, decimal money)
+    {
+        account.TakeMoney(money);
+    }
 
     public void ChangeAccountTerms(IConfig newConfig)
     {
@@ -49,8 +90,8 @@ public class Bank : IBank
             throw new ArgumentException();
         }
 
-        srcAccount.TakeMoney(money); // (decimal money, bool override = false) ?
-        destAccount.PutMoney(money); // -//-
+        srcAccount.TakeMoney(money);
+        destAccount.PutMoney(money);
         return srcAccount.AddTransaction(srcAccount, money, destAccount);
     }
 

@@ -1,4 +1,5 @@
-﻿using Banks.Accounts.Interfaces;
+﻿using Banks.Accounts.Entities;
+using Banks.Accounts.Interfaces;
 using Banks.Banks.Config;
 using Banks.Client;
 
@@ -10,6 +11,13 @@ public interface IBank
     IConfig Config { get; }
     IReadOnlyList<IClient> Clients { get; }
     IReadOnlyList<IBankAccount> BankAccounts { get; }
+    IClient AddClient(IClient client);
+    DebitAccount OpenDebitAccount(IClient client);
+    DepositAccount OpenDepositAccount(IClient client, int termMonth, decimal money);
+    CreditAccount OpenCreditAccount(IClient client);
+    void PutMoney(IBankAccount account, decimal money);
+    void TakeMoney(IBankAccount account, decimal money);
+
     void ChangeAccountTerms(IConfig newConfig);
     void AccumulateDailyPercents();
     void AccruePercents();
