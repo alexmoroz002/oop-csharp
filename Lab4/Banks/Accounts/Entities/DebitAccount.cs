@@ -1,5 +1,6 @@
 ﻿using Banks.Accounts.Interfaces;
 using Banks.Banks;
+using Banks.Exceptions;
 using Banks.Transactions;
 
 namespace Banks.Accounts.Entities;
@@ -38,7 +39,7 @@ public class DebitAccount : IBankAccount
     {
         int removed = _transactions.RemoveAll(x => x.TransactionId == transactionGuid);
         if (removed == 0)
-            throw new ArgumentException();
+            throw BankAccountException.TransactionDoesNotExist(transactionGuid);
     }
 
     public void PutMoney(decimal amount)
@@ -50,7 +51,7 @@ public class DebitAccount : IBankAccount
     {
         Money -= amount;
         if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
-            throw new ArgumentException();
+            throw BankAccountException.SuspiciousLimitReached();
     }
 
     public void AccumulateDailyPercent()

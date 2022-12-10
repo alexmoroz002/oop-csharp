@@ -1,5 +1,6 @@
 ﻿using Banks.Accounts.Interfaces;
 using Banks.Banks;
+using Banks.Exceptions;
 using Banks.Transactions;
 
 namespace Banks.Accounts.Entities;
@@ -36,7 +37,7 @@ public class CreditAccount : IBankAccount
     {
         int removed = _transactions.RemoveAll(x => x.TransactionId == transactionGuid);
         if (removed == 0)
-            throw new ArgumentException();
+            throw BankAccountException.TransactionDoesNotExist(transactionGuid);
     }
 
     public void PutMoney(decimal amount)
@@ -47,9 +48,9 @@ public class CreditAccount : IBankAccount
     public void TakeMoney(decimal amount)
     {
         if (Money - amount < Bank.Config.CreditAccountLimit)
-            throw new ArgumentException();
+            throw BankAccountException.CreditLimitReached();
         if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
-            throw new ArgumentException();
+            throw BankAccountException.SuspiciousLimitReached();
         Money -= amount;
     }
 

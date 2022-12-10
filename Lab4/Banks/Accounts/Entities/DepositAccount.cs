@@ -1,5 +1,6 @@
 ﻿using Banks.Accounts.Interfaces;
 using Banks.Banks;
+using Banks.Exceptions;
 using Banks.Transactions;
 using Transaction = Banks.Transactions.Transaction;
 
@@ -50,7 +51,7 @@ public class DepositAccount : IBankAccount
     {
         int removed = _transactions.RemoveAll(x => x.TransactionId == transactionGuid);
         if (removed == 0)
-            throw new ArgumentException();
+            throw BankAccountException.TransactionDoesNotExist(transactionGuid);
     }
 
     public void PutMoney(decimal amount)
@@ -61,9 +62,9 @@ public class DepositAccount : IBankAccount
     public void TakeMoney(decimal amount)
     {
         if (ActiveMonth < AccountTermMonth)
-            throw new ArgumentException();
+            throw BankAccountException.DepositNotExpired();
         if (IsSuspicious && amount > Bank.Config.SuspiciousLimit)
-            throw new ArgumentException();
+            throw BankAccountException.SuspiciousLimitReached();
         Money -= amount;
     }
 

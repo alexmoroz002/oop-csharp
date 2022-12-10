@@ -1,5 +1,6 @@
 ﻿using Banks.Accounts.Interfaces;
 using Banks.Client.Builder;
+using Banks.Exceptions;
 
 namespace Banks.Client;
 
@@ -29,7 +30,7 @@ public class Client : IClient
         set
         {
             if (_passport != null)
-                throw new ArgumentException();
+                throw ClientException.PassportAlreadySet();
             _passport = value;
             if (Passport == null || Address == null) return;
 
@@ -47,7 +48,7 @@ public class Client : IClient
         set
         {
             if (_address != null)
-                throw new ArgumentException();
+                throw ClientException.AddressAlreadySet();
             _address = value;
             if (Passport == null || Address == null) return;
 

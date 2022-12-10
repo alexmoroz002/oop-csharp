@@ -2,6 +2,7 @@
 using Banks.Accounts.Interfaces;
 using Banks.Banks.Config;
 using Banks.Client;
+using Banks.Exceptions;
 using Banks.Transactions;
 
 namespace Banks.Banks;
@@ -87,7 +88,7 @@ public class Bank : IBank
     {
         if (srcAccount.Money < money)
         {
-            throw new ArgumentException();
+            throw BankAccountException.NotEnoughMoney(srcAccount.Money, money);
         }
 
         srcAccount.TakeMoney(money);
