@@ -11,12 +11,12 @@ public class Client : IClient
 
     internal Client(IBuilder builder)
     {
+        _accounts = new List<IBankAccount>();
         IsSuspicious = true;
         Name = builder.Name;
         Surname = builder.Surname;
         Address = builder.Address;
         Passport = builder.Passport;
-        _accounts = new List<IBankAccount>();
     }
 
     public string Name { get; init; }
@@ -61,4 +61,10 @@ public class Client : IClient
 
     public bool IsSuspicious { get; private set; }
     public IReadOnlyList<IBankAccount> Accounts { get; }
+
+    public IBankAccount AddAccount(IBankAccount account)
+    {
+        _accounts.Add(account);
+        return account;
+    }
 }

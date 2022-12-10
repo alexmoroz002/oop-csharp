@@ -6,11 +6,13 @@ public class ClientBuilder : IBuilder
     {
         Name = name;
         Surname = surname;
+        Passport = null;
+        Address = null;
     }
 
     public string Name { get; private set; }
     public string Surname { get; private set; }
-    public int Passport { get; private set; }
+    public int? Passport { get; private set; }
     public string Address { get; private set; }
 
     public IBuilder AddPassport(int passport)

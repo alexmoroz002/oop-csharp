@@ -10,4 +10,5 @@ public interface IClient
     public string Address { get; set; }
     bool IsSuspicious { get; }
     public IReadOnlyList<IBankAccount> Accounts { get; }
+    public IBankAccount AddAccount(IBankAccount account);
 }
