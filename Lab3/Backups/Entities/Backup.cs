@@ -25,4 +25,9 @@ public class Backup : IBackup
         _restorePoints.Add(restorePoint);
         return restorePoint;
     }
+
+    public void RemovePoints(params IRestorePoint[] points)
+    {
+        _restorePoints.RemoveAll(points.Contains);
+    }
 }

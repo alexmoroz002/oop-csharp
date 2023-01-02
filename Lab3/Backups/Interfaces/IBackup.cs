@@ -7,4 +7,5 @@ public interface IBackup
     int BackupVersion { get; }
     IReadOnlyList<RestorePoint> RestorePoints { get; }
     RestorePoint CreateRestorePoint(IConfig config);
+    public void RemovePoints(params IRestorePoint[] points);
 }
