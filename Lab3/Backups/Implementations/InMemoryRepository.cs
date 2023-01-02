@@ -40,6 +40,6 @@ public class InMemoryRepository : Repository
             }
         }
 
-        return new Storage(archivePath);
+        return new Storage(archivePath, backupObjects);
     }
 }

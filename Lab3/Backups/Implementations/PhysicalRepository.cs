@@ -43,6 +43,6 @@ public class PhysicalRepository : Repository
             }
         }
 
-        return new Storage(archivePath);
+        return new Storage(archivePath, backupObjects);
     }
 }
