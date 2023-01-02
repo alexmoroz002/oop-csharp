@@ -13,7 +13,7 @@ public abstract class Repository
     }
 
     public UPath Path { get; protected init; }
-    protected FileSystem FileSystem { get; }
+    public FileSystem FileSystem { get; }
 
     public abstract Storage ArchiveObjects(UPath backupsPath, int version, params IBackupObject[] backupObjects);
 
