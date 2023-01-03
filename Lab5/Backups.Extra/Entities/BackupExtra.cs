@@ -17,4 +17,9 @@ public class BackupExtra : IBackup
         Log.Information("RP created");
         return rp;
     }
+
+    public void RemovePoints(params IRestorePoint[] points)
+    {
+        _backup.RemovePoints(points);
+    }
 }
