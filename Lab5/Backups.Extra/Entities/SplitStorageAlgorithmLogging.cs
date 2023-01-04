@@ -2,6 +2,7 @@
 using Backups.Implementations;
 using Backups.Interfaces;
 using Backups.Models;
+using Newtonsoft.Json;
 using Serilog;
 using Zio;
 
@@ -9,6 +10,7 @@ namespace Backups.Extra.Entities;
 
 public class SplitStorageAlgorithmLogging : IAlgorithm
 {
+    [JsonProperty("Algorithm")]
     private readonly IAlgorithm _algorithm = new SplitStorageAlgorithm();
     public List<Storage> ArchiveObject(Repository repository, UPath backupsPath, int version, IEnumerable<IBackupObject> objects)
     {

@@ -1,6 +1,8 @@
-﻿using Backups.Entities;
+﻿using System.Text;
+using Backups.Entities;
 using Backups.Interfaces;
 using Backups.Models;
+using Newtonsoft.Json;
 using Zio;
 using Zio.FileSystems;
 
@@ -8,6 +10,7 @@ namespace Backups.Extra.Entities;
 
 public class BackupTaskExtra : IBackupTask
 {
+    [JsonProperty("BackupTask")]
     private readonly IBackupTask _backupTask;
 
     public BackupTaskExtra(IConfig config)
@@ -119,13 +122,6 @@ public class BackupTaskExtra : IBackupTask
         ConfigExtra newConfig = new (new Config(new SplitStorageAlgorithmLogging(), Config.Repository, Config.BackupPath));
         newConfig.AddObjects(newBackupObjects.ToArray());
         Backup.CreateRestorePoint(newConfig);
-        /*
-        IEnumerable<IBackupObject> oldBackupObjects = Config.BackupObjects;
-        Config.RemoveObjects(oldBackupObjects.ToArray());
-        Config.AddObjects(newBackupObjects.ToArray());
-        CreateRestorePoint();
-        Config.RemoveObjects(newBackupObjects.ToArray());
-        Config.AddObjects(oldBackupObjects.ToArray());*/
     }
 
     public void CheckObjectsToBackup(params IBackupObject[] objects)

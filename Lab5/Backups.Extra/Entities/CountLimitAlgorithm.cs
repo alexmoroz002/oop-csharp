@@ -1,9 +1,11 @@
 ﻿using Backups.Interfaces;
+using Newtonsoft.Json;
 
 namespace Backups.Extra.Entities;
 
 public class CountLimitAlgorithm : ILimitAlgorithm
 {
+    [JsonProperty("Limit")]
     private int _limit;
 
     public CountLimitAlgorithm(int limit)

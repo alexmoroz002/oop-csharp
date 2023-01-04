@@ -1,10 +1,14 @@
 ﻿using Backups.Interfaces;
+using Newtonsoft.Json;
 
 namespace Backups.Extra.Entities;
 
 public class HybridLimitAlgorithm : ILimitAlgorithm
 {
+    [JsonProperty("AlgorithmList")]
     private IEnumerable<ILimitAlgorithm> _algorithms;
+
+    [JsonProperty("All")]
     private bool _all;
 
     public HybridLimitAlgorithm(IEnumerable<ILimitAlgorithm> algorithms, bool all)
