@@ -1,4 +1,6 @@
 ﻿using Backups.Interfaces;
+using Backups.Models;
+using Newtonsoft.Json;
 using Zio;
 
 namespace Backups.Entities;
@@ -13,6 +15,7 @@ public class Storage : IStorage
         BackupObjects = backupObject;
     }
 
+    [JsonConverter(typeof(UPathConverter))]
     public UPath ArchivePath { get; }
     public IEnumerable<IBackupObject> BackupObjects { get; }
 }

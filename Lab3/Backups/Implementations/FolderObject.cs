@@ -2,6 +2,7 @@
 using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Models;
+using Newtonsoft.Json;
 using Zio;
 using Zio.FileSystems;
 
@@ -23,8 +24,10 @@ public class FolderObject : IBackupObject
 
     public Repository Repository { get; }
 
+    [JsonConverter(typeof(UPathConverter))]
     public UPath Path { get; }
 
+    [JsonIgnore]
     public string Name => Path.GetName();
 
     public Stream Archive(Stream source)

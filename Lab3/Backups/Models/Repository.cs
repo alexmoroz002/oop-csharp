@@ -1,5 +1,6 @@
 ﻿using Backups.Entities;
 using Backups.Interfaces;
+using Newtonsoft.Json;
 using Zio;
 using Zio.FileSystems;
 
@@ -12,7 +13,9 @@ public abstract class Repository
         FileSystem = fileSystem;
     }
 
+    [JsonConverter(typeof(UPathConverter))]
     public UPath Path { get; protected init; }
+
     public FileSystem FileSystem { get; }
 
     public abstract Storage ArchiveObjects(UPath backupsPath, int version, params IBackupObject[] backupObjects);
