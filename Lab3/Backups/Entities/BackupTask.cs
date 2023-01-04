@@ -11,6 +11,7 @@ public class BackupTask : IBackupTask
     }
 
     public IConfig Config { get; }
+
     public IBackup Backup { get; }
 
     public RestorePoint CreateRestorePoint()

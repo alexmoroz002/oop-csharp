@@ -5,10 +5,10 @@ namespace Backups.Entities;
 
 public class RestorePoint : IRestorePoint
 {
-    [JsonProperty("BackupObjectList")]
+    [JsonProperty("Objects")]
     private List<IBackupObject> _backupObjects;
 
-    [JsonProperty("StorageList")]
+    [JsonProperty("Storages")]
     private List<Storage> _storages;
 
     public RestorePoint(List<IBackupObject> objects, List<Storage> storages)
