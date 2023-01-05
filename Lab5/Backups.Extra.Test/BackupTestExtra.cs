@@ -1,6 +1,7 @@
 ﻿using Backups.Entities;
 using Backups.Extra.Decorators;
 using Backups.Extra.Decorators.Intetrfaces;
+using Backups.Extra.Entities;
 using Backups.Extra.Models.Implementations;
 using Backups.Extra.Services;
 using Backups.Implementations;
@@ -24,19 +25,21 @@ public class BackupTestExtra
     [MemberData(nameof(AlgorithmType))]
     public void CreateRestorePoint_RestoreToSameLocation_DataIsRestored(IAlgorithm algorithm)
     {
-        BackupServiceExtra service = new ();
+        IBackupServiceExtra service = new BackupServiceExtra(false);
         IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+
         CreateDirectoryStructure(config.Repository);
         int itemsBeforeRestore = config.Repository.FileSystem.EnumerateItems(@"/mnt/c/Test/a", SearchOption.AllDirectories).Count() +
                                  config.Repository.FileSystem.EnumerateItems(@"/mnt/c/Test/b", SearchOption.AllDirectories).Count();
         config.AddObjects(SelectBackupObjects(config));
-        BackupTaskExtra task = service.CreateTask(config);
-        RestorePoint rp = service.RunTask(task);
-
+        IBackupTaskExtra task = service.CreateTask(config);
+        IRestorePoint rp = service.RunTask(task);
         RemoveDirectoryStructure(config.Repository);
+
         service.RestoreBackup(task, rp);
         int itemsAfterRestore = config.Repository.FileSystem.EnumerateItems(@"/mnt/c/Test/a", SearchOption.AllDirectories).Count() +
                                 config.Repository.FileSystem.EnumerateItems(@"/mnt/c/Test/b", SearchOption.AllDirectories).Count();
+
         Assert.Equal(itemsBeforeRestore, itemsAfterRestore);
     }
 
@@ -44,41 +47,101 @@ public class BackupTestExtra
     [MemberData(nameof(AlgorithmType))]
     public void CreateRestorePoint_RestoreToDifferentLocation_DataIsRestored(IAlgorithm algorithm)
     {
-        BackupServiceExtra service = new ();
+        IBackupServiceExtra service = new BackupServiceExtra(false);
         IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
-        BackupTaskExtra task = service.CreateTask(config);
-        RestorePoint rp = service.RunTask(task);
-
+        IBackupTaskExtra task = service.CreateTask(config);
+        IRestorePoint rp = service.RunTask(task);
         RemoveDirectoryStructure(config.Repository);
+
         service.RestoreBackupTo(task, rp, config.Repository, "/mnt/c/Test/newLocation");
         IEnumerable<FileSystemItem> itemsAfterRestore = config.Repository.FileSystem.EnumerateItems("/mnt/c/Test/newLocation", SearchOption.TopDirectoryOnly);
+
         Assert.Equal(rp.BackupObjects.Count, itemsAfterRestore.Count());
     }
 
     [Theory]
     [MemberData(nameof(AlgorithmType))]
-    public void CreateRestorePoints_ApplyLimits_PointsCountChanged(IAlgorithm algorithm)
+    public void CreateRestorePoints_ApplyCountLimit_PointsCountChanged(IAlgorithm algorithm)
     {
-        BackupServiceExtra service = new ();
+        IBackupServiceExtra service = new BackupServiceExtra(false);
         IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
-        BackupTaskExtra task = service.CreateTask(config);
+        IBackupTaskExtra task = service.CreateTask(config);
         service.RunTask(task);
-        FileObject file1 = new (config.Repository, @"\mnt\c\Test\b\j\3.txt");
-        FileObject file2 = new (config.Repository, @"\mnt\c\Test\b\j\4.txt");
+        IBackupObject file1 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\3.txt");
+        IBackupObject file2 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\4.txt");
         config.AddObjects(file1, file2);
         service.RunTask(task);
         config.RemoveObjects(file1, file2);
         service.RunTask(task);
         service.RunTask(task);
         service.RunTask(task);
+
         task.LimitAlgorithm = new CountLimitAlgorithm(3);
         task.MergePoints = true;
-
         service.PurgeRestorePoints(task);
+
+        Assert.Equal(3, task.Backup.RestorePoints.Count);
+    }
+
+    [Theory]
+    [MemberData(nameof(AlgorithmType))]
+    public void CreateRestorePoints_ApplyTimeLimit_PointsCountChanged(IAlgorithm algorithm)
+    {
+        IBackupServiceExtra service = new BackupServiceExtra(false);
+        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+
+        CreateDirectoryStructure(config.Repository);
+        config.AddObjects(SelectBackupObjects(config));
+        IBackupTaskExtra task = service.CreateTask(config);
+        service.RunTask(task);
+        IBackupObject file1 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\3.txt");
+        IBackupObject file2 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\4.txt");
+        config.AddObjects(file1, file2);
+        service.RunTask(task);
+        config.RemoveObjects(file1, file2);
+        service.RunTask(task);
+
+        DateTime limitDateTime = DateTime.Now;
+        task.LimitAlgorithm = new TimeLimitAlgorithm(limitDateTime);
+        task.MergePoints = false;
+        service.RunTask(task);
+        service.RunTask(task);
+        service.PurgeRestorePoints(task);
+
+        Assert.All(task.Backup.RestorePoints, rp => Assert.True(rp.CreationTime > limitDateTime));
+    }
+
+    [Theory]
+    [MemberData(nameof(AlgorithmType))]
+    public void CreateRestorePoints_ApplyHybridLimit_PointsCountChanged(IAlgorithm algorithm)
+    {
+        IBackupServiceExtra service = new BackupServiceExtra(false);
+        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+
+        CreateDirectoryStructure(config.Repository);
+        config.AddObjects(SelectBackupObjects(config));
+        IBackupTaskExtra task = service.CreateTask(config);
+        service.RunTask(task);
+        IBackupObject file1 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\3.txt");
+        IBackupObject file2 = new FileObject(config.Repository, @"\mnt\c\Test\b\j\4.txt");
+        config.AddObjects(file1, file2);
+        service.RunTask(task);
+        config.RemoveObjects(file1, file2);
+        service.RunTask(task);
+        service.RunTask(task);
+
+        IEnumerable<ILimitAlgorithm> algorithms = new List<ILimitAlgorithm>() { new TimeLimitAlgorithm(new DateTime(2020, 3, 9, 20, 0, 0)), new CountLimitAlgorithm(2) };
+        task.LimitAlgorithm = new HybridLimitAlgorithm(algorithms, true);
+        task.MergePoints = true;
+        service.PurgeRestorePoints(task);
+
+        Assert.True(task.Backup.RestorePoints.Count > 2);
     }
 
     private Repository CreateDirectoryStructure(Repository repository)
