@@ -31,6 +31,7 @@ public class BackupTaskExtra : IBackupTaskExtra
 
     public void RestoreFromPoint(IRestorePoint rp)
     {
+        ArgumentNullException.ThrowIfNull(rp);
         foreach (Storage storage in rp.Storages)
         {
             Log.Information("Started restoring storage with objects: {0}", string.Join(',', storage.BackupObjects.Select(x => x.Name)));
@@ -69,6 +70,9 @@ public class BackupTaskExtra : IBackupTaskExtra
 
     public void RestoreFromPointTo(IRestorePoint rp, Repository destRepo, UPath destFolder)
     {
+        ArgumentNullException.ThrowIfNull(rp);
+        ArgumentNullException.ThrowIfNull(destFolder);
+        ArgumentNullException.ThrowIfNull(destRepo);
         foreach (Storage storage in rp.Storages)
         {
             Log.Information("Started restoring storage with objects: {0}", string.Join(',', storage.BackupObjects.Select(x => x.Name)));
