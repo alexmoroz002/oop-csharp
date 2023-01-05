@@ -26,7 +26,7 @@ public class BackupTestExtra
     public void CreateRestorePoint_RestoreToSameLocation_DataIsRestored(IAlgorithm algorithm)
     {
         IBackupServiceExtra service = new BackupServiceExtra(false);
-        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+        IConfig config = new Config(algorithm, new InMemoryRepository(), @"/mnt/c/Test");
 
         CreateDirectoryStructure(config.Repository);
         int itemsBeforeRestore = config.Repository.FileSystem.EnumerateItems(@"/mnt/c/Test/a", SearchOption.AllDirectories).Count() +
@@ -48,7 +48,7 @@ public class BackupTestExtra
     public void CreateRestorePoint_RestoreToDifferentLocation_DataIsRestored(IAlgorithm algorithm)
     {
         IBackupServiceExtra service = new BackupServiceExtra(false);
-        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+        IConfig config = new Config(algorithm, new InMemoryRepository(), @"/mnt/c/Test");
 
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
@@ -67,7 +67,7 @@ public class BackupTestExtra
     public void CreateRestorePoints_ApplyCountLimit_PointsCountChanged(IAlgorithm algorithm)
     {
         IBackupServiceExtra service = new BackupServiceExtra(false);
-        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+        IConfig config = new Config(algorithm, new InMemoryRepository(), @"/mnt/c/Test");
 
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
@@ -94,7 +94,7 @@ public class BackupTestExtra
     public void CreateRestorePoints_ApplyTimeLimit_PointsCountChanged(IAlgorithm algorithm)
     {
         IBackupServiceExtra service = new BackupServiceExtra(false);
-        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+        IConfig config = new Config(algorithm, new InMemoryRepository(), @"/mnt/c/Test");
 
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
@@ -122,7 +122,7 @@ public class BackupTestExtra
     public void CreateRestorePoints_ApplyHybridLimit_PointsCountChanged(IAlgorithm algorithm)
     {
         IBackupServiceExtra service = new BackupServiceExtra(false);
-        IConfig config = new Config(algorithm, new PhysicalRepository(), @"/mnt/c/Test");
+        IConfig config = new Config(algorithm, new InMemoryRepository(), @"/mnt/c/Test");
 
         CreateDirectoryStructure(config.Repository);
         config.AddObjects(SelectBackupObjects(config));
