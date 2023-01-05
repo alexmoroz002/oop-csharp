@@ -13,6 +13,7 @@ public class ConfigExtra : IConfig
 
     public ConfigExtra(IConfig config)
     {
+        ArgumentNullException.ThrowIfNull(config);
         _config = config;
     }
 

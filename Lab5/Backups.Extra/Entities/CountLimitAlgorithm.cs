@@ -1,5 +1,6 @@
 ﻿using Backups.Interfaces;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Backups.Extra.Entities;
 
@@ -10,11 +11,18 @@ public class CountLimitAlgorithm : ILimitAlgorithm
 
     public CountLimitAlgorithm(int limit)
     {
+        Log.Information("Creating new CountLimitAlgorithm with {0} RP limit", limit);
+        ArgumentNullException.ThrowIfNull(limit);
         _limit = limit;
+        Log.Information("Algorithm created");
     }
 
     public IEnumerable<IRestorePoint> Execute(IEnumerable<IRestorePoint> points)
     {
-        return points.SkipLast(_limit).Distinct();
+        Log.Information("Applying CountLimitAlgorithm with {0} RP limit", _limit);
+        ArgumentNullException.ThrowIfNull(points);
+        IEnumerable<IRestorePoint> result = points.SkipLast(_limit).Distinct();
+        Log.Information("Algorithm executed successfully");
+        return result;
     }
 }

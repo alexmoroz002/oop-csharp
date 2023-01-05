@@ -16,14 +16,14 @@ public class BackupExtra : IBackup
     public IReadOnlyList<RestorePoint> RestorePoints => _backup.RestorePoints;
     public RestorePoint CreateRestorePoint(IConfig config)
     {
-        Log.Information("Creating RP for {0}", string.Join(',', config.BackupObjects.Select(x => x.Name)));
         RestorePoint rp = _backup.CreateRestorePoint(config);
-        Log.Information("RP created");
         return rp;
     }
 
     public void RemovePoints(params IRestorePoint[] points)
     {
+        Log.Information("Removing {0} point(s)", points.Length);
         _backup.RemovePoints(points);
+        Log.Information("Remove completed");
     }
 }
