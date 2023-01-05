@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Zio;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Decorators;
 
 public class ConfigExtra : IConfig
 {

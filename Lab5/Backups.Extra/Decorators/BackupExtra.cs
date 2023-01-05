@@ -3,7 +3,7 @@ using Backups.Interfaces;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Decorators;
 
 public class BackupExtra : IBackup
 {

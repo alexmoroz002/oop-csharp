@@ -1,11 +1,14 @@
 ﻿using Backups.Entities;
+using Backups.Extra.Decorators.Intetrfaces;
+using Backups.Extra.Entities;
+using Backups.Extra.Models.Implementations;
 using Backups.Interfaces;
 using Backups.Models;
 using Serilog;
 using Zio;
 using Zio.FileSystems;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Decorators;
 
 public class BackupTaskExtra : IBackupTaskExtra
 {

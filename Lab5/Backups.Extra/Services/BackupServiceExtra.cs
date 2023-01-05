@@ -1,11 +1,13 @@
 ﻿using Backups.Entities;
+using Backups.Extra.Decorators;
+using Backups.Extra.Decorators.Intetrfaces;
 using Backups.Interfaces;
 using Backups.Models;
 using Newtonsoft.Json;
 using Serilog;
 using Zio;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Services;
 
 public class BackupServiceExtra : IBackupServiceExtra
 {

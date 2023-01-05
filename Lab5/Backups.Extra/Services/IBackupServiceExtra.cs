@@ -1,8 +1,9 @@
-﻿using Backups.Interfaces;
+﻿using Backups.Extra.Decorators.Intetrfaces;
+using Backups.Interfaces;
 using Backups.Models;
 using Zio;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Services;
 
 public interface IBackupServiceExtra
 {

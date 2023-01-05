@@ -1,8 +1,9 @@
-﻿using Backups.Interfaces;
+﻿using Backups.Extra.Entities;
+using Backups.Interfaces;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace Backups.Extra.Entities;
+namespace Backups.Extra.Models.Implementations;
 
 public class HybridLimitAlgorithm : ILimitAlgorithm
 {

@@ -1,6 +1,6 @@
 ﻿using Backups.Entities;
 using Backups.Exceptions;
-using Backups.Extra.Entities;
+using Backups.Extra.Decorators;
 using Backups.Implementations;
 using Backups.Models;
 using Xunit;
