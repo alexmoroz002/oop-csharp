@@ -14,6 +14,12 @@ public class FileObject : IBackupObject
     {
         if (repository == null)
             throw new ArgumentNullException(nameof(repository));
+        if (!repository.FileSystem.DirectoryExists(path) && !repository.FileSystem.FileExists(path))
+        {
+            repository.FileSystem.CreateDirectory(path.GetDirectory());
+            repository.FileSystem.CreateFile(path).Dispose();
+        }
+
         if (repository.GetObjectAttributes(path) == FileAttributes.Directory)
             throw FileObjectException.InvalidObjectType(path);
         Repository = repository;
