@@ -125,7 +125,8 @@ public class BackupTaskExtra : IBackupTaskExtra
             return;
         }
 
-        pointsToClean = pointsToClean.Append(Backup.RestorePoints.Except(pointsToClean).First()).OrderBy(x => x.CreationTime).ToList();
+        if (pointsToClean.Any(x => x.Storages.Count != 1 || x.Storages[0].BackupObjects.Count() <= 1))
+            pointsToClean = pointsToClean.Append(Backup.RestorePoints.Except(pointsToClean).First()).OrderBy(x => x.CreationTime).ToList();
         Log.Information("Merging {0} points", pointsToClean.Count());
         List<IBackupObject> newBackupObjects = new ();
         foreach (IRestorePoint restorePoint in pointsToClean)
@@ -141,9 +142,13 @@ public class BackupTaskExtra : IBackupTaskExtra
             Backup.RemovePoints(restorePoint);
         }
 
-        ConfigExtra newConfig = new (new Config(new SplitStorageAlgorithmLogging(), Config.Repository, Config.BackupPath));
-        newConfig.AddObjects(newBackupObjects.ToArray());
-        Backup.CreateRestorePoint(newConfig);
+        if (newBackupObjects.Count != 0)
+        {
+            ConfigExtra newConfig = new (new Config(new SplitStorageAlgorithmLogging(), Config.Repository, Config.BackupPath));
+            newConfig.AddObjects(newBackupObjects.ToArray());
+            Backup.CreateRestorePoint(newConfig);
+        }
+
         Log.Information("Merging finished");
     }
 
