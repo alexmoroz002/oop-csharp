@@ -5,7 +5,7 @@ namespace Backups.Interfaces;
 public interface IBackupTask
 {
     IConfig Config { get; }
-    Backup Backup { get; }
+    IBackup Backup { get; }
     RestorePoint CreateRestorePoint();
     void CheckObjectsToBackup(params IBackupObject[] objects);
     void UncheckObjectsToBackup(params IBackupObject[] objects);

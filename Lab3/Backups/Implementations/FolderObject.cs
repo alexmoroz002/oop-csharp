@@ -2,6 +2,7 @@
 using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Models;
+using Newtonsoft.Json;
 using Zio;
 using Zio.FileSystems;
 
@@ -13,6 +14,8 @@ public class FolderObject : IBackupObject
     {
         if (repository == null)
             throw new ArgumentNullException(nameof(repository));
+        if (!repository.FileSystem.DirectoryExists(path) && !repository.FileSystem.FileExists(path))
+            repository.FileSystem.CreateDirectory(path);
         if (repository.GetObjectAttributes(path) != FileAttributes.Directory)
             throw FolderObjectException.InvalidObjectType(path);
         if (path == null)
@@ -23,8 +26,10 @@ public class FolderObject : IBackupObject
 
     public Repository Repository { get; }
 
+    [JsonConverter(typeof(UPathConverter))]
     public UPath Path { get; }
 
+    [JsonIgnore]
     public string Name => Path.GetName();
 
     public Stream Archive(Stream source)

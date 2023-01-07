@@ -1,12 +1,14 @@
 ﻿using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Models;
+using Newtonsoft.Json;
 using Zio;
 
 namespace Backups.Entities;
 
 public class Config : IConfig
 {
+    [JsonProperty("TrackedObjectList")]
     private List<IBackupObject> _trackedObjects;
 
     public Config(IAlgorithm algorithm, Repository repository, UPath backupPath)
@@ -24,7 +26,11 @@ public class Config : IConfig
     public IAlgorithm Algorithm { get; private set; }
 
     public Repository Repository { get; }
+
+    [JsonConverter(typeof(UPathConverter))]
     public UPath BackupPath { get; }
+
+    [JsonIgnore]
     public IReadOnlyList<IBackupObject> BackupObjects => _trackedObjects;
 
     public void AddObjects(params IBackupObject[] objects)
